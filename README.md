@@ -1,5 +1,5 @@
 # UD Trucks Thailand Sales Hub
 
-Static HTML prototype published with GitHub Pages. The page is under `/udtruck/` so it can be mapped to `dc365.online/udtruck`.
+Static HTML prototype published with GitHub Pages. The page is under `/udtruck/` so it can be mapped to `dc365.online/udtruck`. Selecting Calculators → Total cost of ownership opens the diesel-versus-electric TCO calculator at `/udtruck/tco-calculator.html`.
 
-The source file is a standalone navigation prototype. Resource buttons currently show the built-in placeholder notice; the linked brochures, calculators, and internal tools are not included in the supplied file.
+The Sales Hub remains a navigation prototype for its other resources. The supplied diesel-versus-electric TCO calculator is included as a working static page; brochures and other internal tools are not included.

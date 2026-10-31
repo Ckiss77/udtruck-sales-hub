@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta content="#11293b" name="theme-color"/>
+<title>UD Trucks Thailand | Diesel vs Electric TCO Calculator</title>
+<style>
+:root{--navy:#10283b;--navy2:#183c52;--red:#e43146;--ink:#172938;--muted:#66798b;--line:#dde5eb;--bg:#f3f6f8;--paper:#fff;--blue:#385b75;--teal:#0e8c8c;--gold:#d5a333;--purple:#8365b5;--shadow:0 10px 32px rgba(17,40,59,.055)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Arial,sans-serif;font-size:14px;line-height:1.45;font-variant-numeric:tabular-nums}button,input{font:inherit}button{cursor:pointer}header{background:linear-gradient(116deg,#102638 0%,#194256 73%,#22485b 100%);color:white;padding:23px clamp(18px,3vw,48px) 31px}header .topline{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap} .brand{display:flex;align-items:center;gap:12px;font-weight:850;letter-spacing:.035em;font-size:19px}.brand-mark{background:var(--red);color:#fff;padding:7px 10px;border-radius:4px;letter-spacing:.03em;font-size:15px}.brand small{font-size:10px;font-weight:600;display:block;color:#b7c9d5;letter-spacing:.09em}.header-tag{border:1px solid #547083;border-radius:99px;padding:6px 12px;color:#d7e7ed;font-size:12px}.hero{display:flex;align-items:end;justify-content:space-between;gap:16px;margin-top:25px;flex-wrap:wrap}.hero h1{font-size:clamp(25px,3vw,39px);line-height:1.12;letter-spacing:-.04em;margin:0 0 7px;font-weight:800}.hero p{margin:0;color:#c6d8e1;max-width:700px}.actions{display:flex;flex-wrap:wrap;gap:8px}.action-btn{border:1px solid #8198a6;padding:10px 13px;border-radius:8px;background:transparent;color:#fff;font-weight:650}.action-btn:hover{background:rgba(255,255,255,.12)}.action-btn.primary{background:var(--red);border-color:var(--red)}.action-btn.primary:hover{background:#c92337}
+.layout{display:grid;grid-template-columns:minmax(320px,386px) minmax(0,1fr);gap:20px;max-width:1690px;margin:0 auto;padding:22px clamp(14px,2vw,36px) 48px;align-items:start}.input-panel,.panel,.kpi{background:var(--paper);border:1px solid var(--line);border-radius:13px;box-shadow:var(--shadow)}.input-panel{padding:18px 18px 22px}.input-heading{display:flex;align-items:center;justify-content:space-between;padding-bottom:14px;border-bottom:1px solid var(--line)}.input-heading h2,.panel h2{font-size:16px;margin:0;letter-spacing:-.02em}.input-heading span{font-size:11px;font-weight:750;color:#fff;background:var(--navy);padding:4px 8px;border-radius:4px}.input-section{padding:16px 0 7px;border-bottom:1px solid var(--line)}.input-section:last-child{border:0;padding-bottom:0}.section-heading{display:flex;gap:9px;align-items:center;margin-bottom:12px}.section-heading .number{display:grid;place-items:center;width:24px;height:24px;border-radius:6px;background:#eaf0f4;color:var(--navy);font-size:12px;font-weight:800}.section-heading h3{margin:0;font-size:13px;letter-spacing:.006em}.fields{display:grid;grid-template-columns:1fr 1fr;gap:11px}.field{min-width:0}.field.full{grid-column:1/-1}.field label{display:block;font-weight:600;color:#506273;font-size:11.5px;margin-bottom:5px}.field input{width:100%;border:1px solid #cdd9e1;border-radius:7px;padding:10px 10px;min-width:0;background:#fff;color:#152d3d;outline:none;font-weight:650;transition:border .15s,box-shadow .15s}.field input:focus{border-color:#316b91;box-shadow:0 0 0 3px #dceaf3}.field .hint{display:block;color:#8a9aa7;margin-top:4px;font-size:10px}.input-footnote{font-size:11px;color:var(--muted);margin:10px 0 0}.compare-box{background:#edf3f7;border:1px solid #d6e1e9;border-radius:10px;padding:12px;margin-top:16px}.compare-toggle{display:flex;align-items:center;justify-content:space-between;gap:12px;cursor:pointer;font-weight:750}.compare-toggle small{display:block;color:var(--muted);font-size:11px;font-weight:500;margin-top:2px}.compare-toggle input{width:19px;height:19px;accent-color:var(--red);cursor:pointer}.compare-inputs{display:none;border-top:1px solid #d3e1e9;margin-top:12px;padding-top:14px}.compare-inputs.visible{display:block}.compare-inputs h4{font-size:12px;margin:6px 0 12px;color:#294456}
+.results{min-width:0}.kpi-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:11px;margin-bottom:16px}.kpi{padding:17px 14px 15px;min-height:116px}.kpi.highlight{border-top:3px solid var(--red)}.kpi-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;font-weight:750}.kpi-value{font-size:clamp(19px,2.1vw,28px);font-weight:850;letter-spacing:-.04em;margin:9px 0 2px;overflow-wrap:anywhere}.kpi-sub{color:var(--muted);font-size:11px}.kpi-compare{color:#b02234;font-size:11px;margin-top:5px;font-weight:600}.panel{padding:19px 20px;margin-bottom:16px;min-width:0}.panel-head{display:flex;align-items:start;justify-content:space-between;gap:16px;margin-bottom:18px;flex-wrap:wrap}.panel-subtitle{font-size:11.5px;color:var(--muted);margin-top:4px}.micro-tag{font-size:10.5px;font-weight:700;background:#eef2f6;color:#476174;padding:5px 8px;border-radius:5px;white-space:nowrap}.breakdown{margin:12px 0 21px}.bar-caption{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:8px;font-size:12px;font-weight:750}.bar-caption span:last-child{color:var(--muted);font-weight:600}.stacked{height:19px;display:flex;border-radius:5px;overflow:hidden;background:#edf1f3;width:100%}.bar-part{height:100%;min-width:0;transition:width .2s}.legend{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-top:12px}.legend-item{font-size:11px;color:var(--muted)}.legend-item .dot{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:5px}.legend-item strong{display:block;color:var(--ink);font-size:12px;margin-top:3px;font-weight:800}.legend-item span:last-child{display:block;font-size:10px}.table-scroll{overflow-x:auto;width:100%}table{border-collapse:collapse;width:100%;font-size:12.5px;min-width:445px}th,td{padding:10px 11px;border-bottom:1px solid #e8eef2;text-align:right;white-space:nowrap}th:first-child,td:first-child{text-align:left}th{background:#f5f8fa;color:#516576;font-weight:750;font-size:11px}tr.group td{background:#f9fafb;color:#526b7c;font-weight:800;font-size:10px;letter-spacing:.065em;text-transform:uppercase;padding-top:14px;padding-bottom:7px}tr.emphasis td{background:#f0f5f8;color:#142b3d;font-weight:850;font-size:13px}tr:last-child td{border-bottom:0}.smallnote{border-left:3px solid var(--teal);padding:12px 14px;background:#f5f9fa;color:#485e6e;border-radius:0 6px 6px 0;font-size:11.5px;margin-top:15px}.section-toolbar{display:flex;gap:7px;align-items:center;flex-wrap:wrap}footer{max-width:1690px;margin:0 auto;padding:0 clamp(14px,2vw,36px) 22px;color:#6b7b89;font-size:11px}.empty-note{font-size:12px;color:var(--muted)}.annual-caption{margin:14px 0 0;color:var(--muted);font-size:11px}.comp-savings{color:#116f68;font-weight:800}.comp-more{color:#bd3445;font-weight:800}.hidden{display:none!important}
+@media(max-width:1190px){.layout{grid-template-columns:minmax(290px,350px) minmax(0,1fr)}.kpi-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.legend{grid-template-columns:repeat(3,minmax(0,1fr))}}@media(max-width:810px){.layout{display:block}.input-panel{margin-bottom:18px}.kpi-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.hero{align-items:start}.fields{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:460px){.kpi{padding:13px 11px}.kpi-value{font-size:21px}.panel{padding:15px 12px}.legend{grid-template-columns:repeat(2,minmax(0,1fr))}.brand{font-size:16px}.fields{gap:10px}}
+@media print{body{background:#fff;font-size:11px}header{color:#152d3d;background:#fff;border-bottom:2px solid #183a4f;padding:9px 0 12px}.brand small,.hero p{color:#547083}.header-tag,.actions,.input-panel,.compare-box,footer{display:none!important}.hero{margin-top:8px}.hero h1{font-size:24px}.layout{display:block;padding:12px 0 0}.panel,.kpi{box-shadow:none;break-inside:avoid}.kpi-grid{grid-template-columns:repeat(4,1fr)}.panel{margin-bottom:8px;padding:12px}.kpi{min-height:80px}.kpi-value{font-size:18px}table{font-size:10px}td,th{padding:6px} .legend{display:grid;grid-template-columns:repeat(5,1fr)}.page-break{break-before:page} }
+
+/* Side-by-side truck comparison (desktop and landscape-friendly). */
+.mode-row{max-width:1690px;margin:20px auto 0;padding:0 clamp(18px,3vw,48px)}
+.compare-top{display:flex;justify-content:space-between;gap:16px;align-items:center;width:min(470px,100%);background:#ffffff13;border:1px solid #ffffff42;border-radius:10px;padding:11px 14px;color:#fff;font-size:13px}
+.compare-top small{color:#c6d8e1}.compare-top input{accent-color:#e43146}
+.shared-assumptions{grid-column:1/-1;background:#e9eff3;border:1px solid #d6e1e9;border-radius:13px;padding:14px 19px;box-shadow:var(--shadow)}
+.shared-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px;flex-wrap:wrap}
+.shared-head h2{font-size:17px;letter-spacing:-.025em;margin:2px 0 0}.shared-head>span{font-size:11px;font-weight:700;color:#395f72;background:#d7e5ed;padding:5px 9px;border-radius:99px}
+.shared-eyebrow{font-size:10px;letter-spacing:.085em;font-weight:800;color:#678195}
+.shared-fields{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px}
+.shared-fields .field{min-width:0}.shared-fields .field label{font-size:11px}.shared-fields .field input{background:#fff}
+.input-panel .input-footnote{line-height:1.55}
+.compare-inputs{display:none}.input-panel.compare-inputs{margin-top:0;padding:18px 18px 22px;border-top:1px solid var(--line)}.compare-inputs.visible{display:block}
+.layout.comparison-on{grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.layout.comparison-on .results{grid-column:1/-1}
+.layout.comparison-on .input-panel{width:100%;min-width:0}
+.comparison-dashboard{margin-bottom:17px}
+.comparison-head{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin:3px 0 12px}
+.comparison-head h2{margin:1px 0 0;font-size:22px;letter-spacing:-.035em}
+.comparison-verdict{font-weight:800;font-size:13px;padding:10px 15px;background:#e2f2ee;color:#11695e;border:1px solid #bfe4da;border-radius:9px;max-width:520px}
+.compare-cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.compare-card{background:#fff;border:1px solid var(--line);border-radius:13px;padding:21px;box-shadow:var(--shadow);min-width:0}
+.compare-card.cheaper{border-color:#8dc9bb;box-shadow:0 0 0 1px #a5d7ca}
+.compare-card-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:13px}
+.truck-name-tag{font-size:12px;font-weight:850;letter-spacing:.05em;background:#e7eef4;color:#274f6a;padding:6px 10px;border-radius:5px}
+.truck-b-name{background:#fce8eb;color:#bd3649}.compare-price{font-size:12px;color:#677e8f;font-weight:700}
+.compare-hero-label{font-size:12px;color:#667d8b;font-weight:700}.compare-hero-value{font-size:clamp(30px,3.4vw,44px);letter-spacing:-.05em;font-weight:850;margin:4px 0 12px;color:#102d42}
+.compare-bar-track{height:10px;border-radius:12px;background:#e9eff3;overflow:hidden;margin:1px 0 21px}.compare-bar-fill{height:100%;border-radius:12px;transition:width .2s}.truck-a-fill{background:#3d718d}.truck-b-fill{background:#e43146}
+.compare-metrics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.compare-metric{border-top:1px solid #e6ecf0;padding:11px 0 3px;min-width:0}
+.compare-metric span{color:#66798b;font-size:11px;display:block}.compare-metric strong{font-size:clamp(14px,1.25vw,18px);display:block;margin-top:5px;letter-spacing:-.02em;overflow-wrap:anywhere}
+.comparison-on #breakdowns{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.comparison-on .breakdown{margin:1px 0 0;padding:13px 14px;border:1px solid #e5ebef;border-radius:9px}
+.comparison-on .legend{grid-template-columns:repeat(3,minmax(0,1fr))}
+.comparison-on .kpi-grid{display:none}
+@media(max-width:920px){.shared-fields{grid-template-columns:repeat(2,minmax(0,1fr))}.compare-metrics{gap:6px}.comparison-on .legend{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:810px){.layout.comparison-on{display:grid;grid-template-columns:1fr}.layout.comparison-on .results{grid-column:1}.compare-cards{grid-template-columns:1fr}.comparison-on #breakdowns{grid-template-columns:1fr}.shared-assumptions{margin-bottom:17px}.layout.comparison-on .shared-assumptions{margin-bottom:0}.shared-fields{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:460px){.shared-fields{gap:9px}.shared-assumptions{padding:13px}.compare-card{padding:15px}.compare-metric strong{font-size:14px}}
+@media print{.mode-row,.shared-assumptions,.comparison-verdict{display:none!important}.layout.comparison-on{display:block!important}.comparison-on .compare-cards{grid-template-columns:1fr 1fr}.comparison-on #breakdowns{display:grid;grid-template-columns:1fr 1fr}.compare-card{padding:11px}.compare-hero-value{font-size:25px}.compare-metric{padding:5px 0}.compare-metric strong{font-size:12px}.comparison-head{margin-bottom:9px}.comparison-dashboard{page-break-after:avoid}.comparison-on .breakdown{padding:8px}.comparison-on .legend{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* Diesel / EV powertrain additions; retain original TCO layout and colors. */
+.field select{width:100%;border:1px solid #cdd9e1;border-radius:7px;padding:10px 10px;background:#fff;color:#152d3d;outline:none;font:inherit;font-weight:750;cursor:pointer}
+.field select:focus{border-color:#316b91;box-shadow:0 0 0 3px #dceaf3}
+.energy-electric .field input{border-color:#b1d6d0;background:#f8fcfb}
+.electric-mode .input-heading span{background:#116d73}
+.electric-mode .input-heading h2::after{content:'  ·  EV';font-size:11px;color:#168982;font-weight:750}
+.energy-diesel,.energy-electric{margin-top:0}
+.layout.comparison-on .shared-fields{grid-template-columns:repeat(5,minmax(0,1fr))}
+@media(max-width:1190px){.layout.comparison-on .shared-fields{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:920px){.layout.comparison-on .shared-fields{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:810px){.shared-fields{grid-template-columns:repeat(2,minmax(0,1fr))}.layout.comparison-on .shared-fields{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:460px){.shared-fields{grid-template-columns:1fr 1fr}}
+</style>
+<style>
+.hub-back{display:inline-block;border:1px solid #8198a6;padding:6px 12px;border-radius:99px;color:#fff;text-decoration:none;font-size:12px;font-weight:650;white-space:nowrap}
+.hub-back:hover{background:rgba(255,255,255,.12)}
+</style>
+</head>
+<body>
+<header>
+<div class="topline"><div class="brand"><span class="brand-mark">UD</span><div>TRUCKS <small>THAILAND • SALES TOOLS</small></div></div><a class="hub-back" href="./">← Back to Sales Hub</a><div class="header-tag">DIESEL VS ELECTRIC · THB</div></div>
+<div class="hero"><div><h1>Total Cost of Ownership</h1><p>Compare diesel and electric trucks: financing, diesel / AdBlue or electricity, operating expenses, depreciation and resale value — in one TCO model.</p></div><div class="actions"><button class="action-btn" id="resetBtn">Reset example</button><button class="action-btn" id="csvBtn">Export CSV</button><button class="action-btn primary" id="printBtn">Print / Save PDF</button></div></div>
+<div class="mode-row"><label class="compare-toggle compare-top" for="compare"><span>Compare two trucks side by side<small>Default: Truck A diesel vs Truck B electric</small></span><input checked="" id="compare" type="checkbox"/></label></div></header>
+<main class="layout" id="mainLayout"><section aria-label="Shared calculation assumptions" class="shared-assumptions"><div class="shared-head"><div><div class="shared-eyebrow">CALCULATION SETTINGS</div><h2>Shared assumptions</h2></div><span>Same term, distance &amp; energy prices</span></div><div class="shared-fields"><div class="field"><label for="months">Lease / finance period (months)</label><input id="months" max="240" min="1" step="1" type="number" value="60"/></div><div class="field"><label for="annualKm">Annual distance (km)</label><input id="annualKm" min="0" step="5000" type="number" value="120000"/></div><div class="field"><label for="dieselPrice">Diesel price (THB/L)</label><input id="dieselPrice" min="0" step="0.5" type="number" value="32"/></div><div class="field"><label for="adbluePrice">AdBlue price (THB/L)</label><input id="adbluePrice" min="0" step="0.5" type="number" value="15"/></div><div class="field"><label for="electricityPrice">Electricity price (THB/kWh)</label><input id="electricityPrice" min="0" step="0.1" type="number" value="4.5"/></div></div></section>
+<aside class="input-panel truck-a">
+<div class="input-heading"><h2>Truck A</h2><span>DIESEL</span></div>
+<div class="input-section">
+<div class="section-heading"><span class="number">01</span><h3>Truck price &amp; financing</h3></div>
+<div class="fields"><div class="field full"><label for="a_type">Truck powertrain</label>
+<select id="a_type"><option selected="" value="diesel">Diesel truck</option>
+<option value="electric">Electric truck (battery EV)</option></select></div>
+<div class="field full"><label for="a_price">Vehicle purchase price (THB)</label><input id="a_price" min="0" step="10000" type="number" value="2600000"/></div>
+<div class="field"><label for="a_down">Down payment (%)</label><input id="a_down" max="100" min="0" step="1" type="number" value="20"/></div>
+<div class="field"><label for="a_rate">Effective annual interest (%)</label><input id="a_rate" max="100" min="0" step="0.1" type="number" value="6"/></div>
+<div class="field"><label for="a_residual">Residual value (%)</label><input id="a_residual" max="100" min="0" step="0.1" type="number" value="46"/></div>
+<div class="field full"><label for="a_residualValue">Estimated resale / residual value (THB)</label><input id="a_residualValue" min="0" step="10000" type="number" value="1196000"/></div>
+</div><p class="input-footnote">Finance payment assumes full loan amortization and an effective annual, not flat, interest rate.</p>
+</div>
+<div class="input-section"><div class="section-heading"><span class="number">02</span><h3 id="a_energyHeading">Energy efficiency</h3></div>
+<div class="fields energy-diesel" id="a_dieselFields">
+<div class="field"><label for="a_economy">Diesel efficiency (km/L)</label><input id="a_economy" min="0.01" step="0.1" type="number" value="3"/></div>
+<div class="field"><label for="a_adblueRate">AdBlue use (% of diesel litres)</label><input id="a_adblueRate" max="100" min="0" step="0.5" type="number" value="5"/></div>
+</div>
+<div class="fields energy-electric hidden" id="a_electricFields">
+<div class="field"><label for="a_kwhKm">Electricity use (kWh/km)</label><input id="a_kwhKm" min="0.01" step="0.05" type="number" value="1.5"/></div>
+<div class="field"><label for="a_chargingLoss">Charging losses (%)</label><input id="a_chargingLoss" max="99" min="0" step="1" type="number" value="0"/></div>
+</div>
+<p class="input-footnote" id="a_energyNote">AdBlue efficiency (km/L) is calculated and shown in the results.</p></div>
+<div class="input-section">
+<div class="section-heading"><span class="number">03</span><h3>Annual operating expenses</h3></div>
+<div class="fields">
+<div class="field"><label for="a_maintenance">Maintenance (THB/year)</label><input id="a_maintenance" min="0" step="5000" type="number" value="150000"/></div>
+<div class="field"><label for="a_insurance">Insurance (THB/year)</label><input id="a_insurance" min="0" step="5000" type="number" value="100000"/></div>
+<div class="field"><label for="a_tires">Tyres (THB/year)</label><input id="a_tires" min="0" step="5000" type="number" value="70000"/></div>
+<div class="field"><label for="a_roadTax">Road tax (THB/year)</label><input id="a_roadTax" min="0" step="500" type="number" value="5000"/></div>
+<div class="field"><label for="a_gps">GPS / telematics (THB/year)</label><input id="a_gps" min="0" step="1000" type="number" value="10000"/></div>
+<div class="field"><label for="a_other">Other (THB/year)</label><input id="a_other" min="0" step="1000" type="number" value="0"/></div>
+</div>
+</div>
+</aside><aside class="input-panel compare-inputs truck-b" id="compareInputs"><div class="input-heading"><h2>Truck B</h2><span>ELECTRIC</span></div><div class="input-section"><div class="section-heading"><span class="number">01</span><h3>Truck price &amp; financing</h3></div><div class="fields"><div class="field full"><label for="b_type">Truck powertrain</label>
+<select id="b_type"><option value="diesel">Diesel truck</option>
+<option selected="" value="electric">Electric truck (battery EV)</option></select></div><div class="field full"><label for="b_price">Vehicle price (THB)</label><input id="b_price" min="0" step="10000" type="number" value="4600000"/></div><div class="field"><label for="b_down">Down payment (%)</label><input id="b_down" max="100" min="0" step="1" type="number" value="20"/></div><div class="field"><label for="b_rate">Effective interest (%)</label><input id="b_rate" max="100" min="0" step="0.1" type="number" value="6"/></div><div class="field"><label for="b_residual">Residual value (%)</label><input id="b_residual" max="100" min="0" step="0.1" type="number" value="30"/></div><div class="field full"><label for="b_residualValue">Residual value (THB)</label><input id="b_residualValue" min="0" step="10000" type="number" value="1380000"/></div></div></div><div class="input-section"><div class="section-heading"><span class="number">02</span><h3 id="b_energyHeading">Energy efficiency</h3></div>
+<div class="fields energy-diesel" id="b_dieselFields">
+<div class="field"><label for="b_economy">Diesel efficiency (km/L)</label><input id="b_economy" min="0.01" step="0.1" type="number" value="3.3"/></div>
+<div class="field"><label for="b_adblueRate">AdBlue use (% of diesel litres)</label><input id="b_adblueRate" max="100" min="0" step="0.5" type="number" value="4.5"/></div>
+</div>
+<div class="fields energy-electric hidden" id="b_electricFields">
+<div class="field"><label for="b_kwhKm">Electricity use (kWh/km)</label><input id="b_kwhKm" min="0.01" step="0.05" type="number" value="1.5"/></div>
+<div class="field"><label for="b_chargingLoss">Charging losses (%)</label><input id="b_chargingLoss" max="99" min="0" step="1" type="number" value="0"/></div>
+</div>
+<p class="input-footnote" id="b_energyNote">AdBlue efficiency (km/L) is calculated and shown in the results.</p></div><div class="input-section"><div class="section-heading"><span class="number">03</span><h3>Annual operating expenses</h3></div><div class="fields"><div class="field"><label for="b_maintenance">Maintenance (THB)</label><input id="b_maintenance" min="0" step="5000" type="number" value="85000"/></div><div class="field"><label for="b_insurance">Insurance (THB)</label><input id="b_insurance" min="0" step="5000" type="number" value="130000"/></div><div class="field"><label for="b_tires">Tyres (THB)</label><input id="b_tires" min="0" step="5000" type="number" value="70000"/></div><div class="field"><label for="b_roadTax">Road tax (THB)</label><input id="b_roadTax" min="0" step="500" type="number" value="5000"/></div><div class="field"><label for="b_gps">GPS (THB)</label><input id="b_gps" min="0" step="1000" type="number" value="10000"/></div><div class="field"><label for="b_other">Other (THB)</label><input id="b_other" min="0" step="1000" type="number" value="0"/></div></div></div><p class="input-footnote">Term, annual mileage and energy prices are controlled in Shared assumptions above. Charging infrastructure and battery replacement can be entered under Other costs.</p></aside>
+<section aria-live="polite" class="results"><div aria-live="polite" class="comparison-dashboard hidden" id="comparisonDashboard">
+<div class="comparison-head">
+<div><div class="shared-eyebrow">SIDE-BY-SIDE COMPARISON</div><h2 id="compareCardTitle">Diesel vs Electric · Truck A vs B</h2><div class="panel-subtitle">Same mileage and finance term; each vehicle uses its own powertrain and cost structure.</div></div>
+<div class="comparison-verdict" id="comparisonVerdict">—</div>
+</div>
+<div class="compare-cards">
+<article class="compare-card" id="compareCardA">
+<div class="compare-card-head"><span class="truck-name-tag">TRUCK A · DIESEL</span><span class="compare-price" id="compareAPrice">—</span></div>
+<div class="compare-hero-label">Total ownership cost per km</div>
+<div class="compare-hero-value" id="compareAPerKm">—</div>
+<div class="compare-bar-track"><div class="compare-bar-fill truck-a-fill" id="compareABar"></div></div>
+<div class="compare-metrics">
+<div class="compare-metric"><span>Full-term TCO</span><strong id="compareATotal">—</strong></div>
+<div class="compare-metric"><span>Average TCO / month</span><strong id="compareAMonthly">—</strong></div>
+<div class="compare-metric"><span>Finance payment / month</span><strong id="compareAFinance">—</strong></div>
+<div class="compare-metric"><span>Operating costs / year</span><strong id="compareAOp">—</strong></div>
+<div class="compare-metric"><span>Depreciation over term</span><strong id="compareADep">—</strong></div>
+<div class="compare-metric"><span>Residual value at term end</span><strong id="compareARes">—</strong></div>
+<div class="compare-metric"><span>Energy cost / year</span><strong id="compareAEnergy">—</strong></div>
+<div class="compare-metric"><span>Energy consumption</span><strong id="compareAEnergyUse">—</strong></div></div>
+</article>
+<article class="compare-card" id="compareCardB">
+<div class="compare-card-head"><span class="truck-name-tag truck-b-name">TRUCK B · ELECTRIC</span><span class="compare-price" id="compareBPrice">—</span></div>
+<div class="compare-hero-label">Total ownership cost per km</div>
+<div class="compare-hero-value" id="compareBPerKm">—</div>
+<div class="compare-bar-track"><div class="compare-bar-fill truck-b-fill" id="compareBBar"></div></div>
+<div class="compare-metrics">
+<div class="compare-metric"><span>Full-term TCO</span><strong id="compareBTotal">—</strong></div>
+<div class="compare-metric"><span>Average TCO / month</span><strong id="compareBMonthly">—</strong></div>
+<div class="compare-metric"><span>Finance payment / month</span><strong id="compareBFinance">—</strong></div>
+<div class="compare-metric"><span>Operating costs / year</span><strong id="compareBOp">—</strong></div>
+<div class="compare-metric"><span>Depreciation over term</span><strong id="compareBDep">—</strong></div>
+<div class="compare-metric"><span>Residual value at term end</span><strong id="compareBRes">—</strong></div>
+<div class="compare-metric"><span>Energy cost / year</span><strong id="compareBEnergy">—</strong></div>
+<div class="compare-metric"><span>Energy consumption</span><strong id="compareBEnergyUse">—</strong></div></div>
+</article>
+</div>
+</div>
+<div class="kpi-grid" id="singleKpis">
+<div class="kpi highlight"><div class="kpi-label">Total ownership cost / km</div><div class="kpi-value" id="kpiPerKm">–</div><div class="kpi-sub" id="kpiDistance">Estimated full-term mileage</div><div class="kpi-compare hidden" id="kpiDiff"></div></div>
+<div class="kpi"><div class="kpi-label">Full-term net TCO</div><div class="kpi-value" id="kpiTotal">–</div><div class="kpi-sub" id="kpiTerm">60-month economic cost</div></div>
+<div class="kpi"><div class="kpi-label">Average TCO / month</div><div class="kpi-value" id="kpiMonth">–</div><div class="kpi-sub">Includes operating costs &amp; depreciation</div></div>
+<div class="kpi"><div class="kpi-label">Finance payment / month</div><div class="kpi-value" id="kpiPayment">–</div><div class="kpi-sub">Excludes down payment &amp; running costs</div></div>
+</div>
+<div class="panel">
+<div class="panel-head"><div><h2>Where the money goes</h2><div class="panel-subtitle">Economic TCO by cost category over the full period</div></div><span class="micro-tag">DEPRECIATION + INTEREST + RUNNING COSTS</span></div>
+<div id="breakdowns"></div>
+<div class="smallnote"><strong>No double counting:</strong> Economic TCO includes depreciation (purchase price minus resale value) <em>plus</em> finance interest and operating costs. Loan principal is part of your payments, but is <em>not</em> added to depreciation. The full-term net cash flow reconciles to the same total if the operator receives the resale proceeds.</div>
+</div>
+<div class="panel">
+<div class="panel-head"><div><h2>Detailed operating &amp; ownership costs</h2><div class="panel-subtitle">All values shown in Thai baht unless otherwise stated</div></div><span class="micro-tag" id="summaryTag">TRUCK A</span></div>
+<div class="table-scroll"><table id="summaryTable"><thead></thead><tbody></tbody></table></div>
+</div>
+<div class="panel">
+<div class="panel-head"><div><h2>Annual TCO &amp; cash flow</h2><div class="panel-subtitle">Annual economic cost and actual cash paid, including resale proceeds in the final year</div></div><span class="micro-tag" id="annualTag">60 MONTHS</span></div>
+<div class="table-scroll"><table id="annualTable"><thead></thead><tbody></tbody></table></div>
+<p class="annual-caption" id="annualCaption">Net cash flow: first period includes down payment, each period includes finance payments and operating costs, and the final period deducts resale proceeds. Economic TCO instead uses straight-line depreciation and interest. Both sum to the same full-term total.</p>
+</div>
+</section>
+</main>
+<footer><strong>Model assumptions:</strong> Illustrative inputs only. Same annual mileage and loan term across trucks; prices, mileage and running costs held constant; effective-rate amortizing financing; straight-line depreciation; vehicle resale proceeds belong to operator. Electricity is calculated from kWh/km and optional charging losses. EVs require no diesel or AdBlue. Charging infrastructure, battery replacement, subsidies, VAT/taxes, inflation and carbon prices are excluded unless manually included in Other expenses. This is financed purchase / lease-to-own, not a true operating lease.</footer>
+<script>'use strict';
+const el=id=>document.getElementById(id);
+const defaults=Object.fromEntries([...document.querySelectorAll('input[type="number"]')].map(x=>[x.id,x.value]));
+const initialPowertrains={a:el('a_type').value,b:el('b_type').value};
+const number=id=>{const inp=el(id);if(!inp)return 0;const v=Number(inp.value);if(!Number.isFinite(v))return 0;const min=inp.hasAttribute('min')?Number(inp.min):-Infinity;const max=inp.hasAttribute('max')?Number(inp.max):Infinity;return Math.max(min,Math.min(max,v));};
+const fmt=(n,d=0)=>Number.isFinite(n)?n.toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d}):'—';
+const money=(n,d=0)=>'฿'+fmt(n,d);
+const escapeCsv=v=>'"'+String(v??'').replaceAll('"','""')+'"';
+const categories=['Depreciation','Finance interest','Diesel','AdBlue','Electricity','Other operating'];
+const colors=['#385b75','#8365b5','#e43146','#d5a333','#0e8c8c','#699bb0'];
+let latest=null;
+function calculate(prefix){
+  const powertrain=el(prefix+'_type').value;
+  const months=Math.max(1,Math.round(number('months'))), years=months/12, annualKm=number('annualKm');
+  const price=number(prefix+'_price'),downPercent=number(prefix+'_down'),rate=number(prefix+'_rate'),residualPercent=number(prefix+'_residual');
+  const down=price*downPercent/100,principal=price-down,monthlyRate=Math.pow(1+rate/100,1/12)-1;
+  const scheduledPayment=principal===0?0:monthlyRate<1e-12?principal/months:principal*monthlyRate/(1-Math.pow(1+monthlyRate,-months));
+  let balance=principal,interest=0,payments=0;const yearInterest=[],yearPayment=[];
+  for(let i=0;i<months;i++){
+    const interestMonth=balance*monthlyRate;
+    const pay=i===months-1?balance+interestMonth:Math.min(scheduledPayment,balance+interestMonth);
+    balance=Math.max(0,balance+interestMonth-pay);interest+=interestMonth;payments+=pay;
+    const y=Math.floor(i/12);yearInterest[y]=(yearInterest[y]||0)+interestMonth;yearPayment[y]=(yearPayment[y]||0)+pay;
+  }
+  const diesel=powertrain==='diesel';
+  const fuelEfficiency=diesel?number(prefix+'_economy'):0;
+  const adblueShare=diesel?number(prefix+'_adblueRate')/100:0;
+  const annualDieselLitres=diesel && fuelEfficiency>0?annualKm/fuelEfficiency:0;
+  const annualAdblueLitres=annualDieselLitres*adblueShare;
+  const adblueKmPerL=annualAdblueLitres>0?annualKm/annualAdblueLitres:null;
+  const annualDieselCost=annualDieselLitres*number('dieselPrice');
+  const annualAdblueCost=annualAdblueLitres*number('adbluePrice');
+  const kwhPerKm=diesel?0:number(prefix+'_kwhKm');
+  const chargingLoss=diesel?0:number(prefix+'_chargingLoss');
+  const annualElectricityKwh=diesel?0:annualKm*kwhPerKm/(1-chargingLoss/100);
+  const billedKwhPerKm=annualKm>0?annualElectricityKwh/annualKm:0;
+  const annualElectricityCost=annualElectricityKwh*number('electricityPrice');
+  const energyCost=annualDieselCost+annualAdblueCost+annualElectricityCost;
+  const energyCostPerKm=annualKm>0?energyCost/annualKm:0;
+  const fixedAnnual=['maintenance','insurance','tires','roadTax','gps','other'].reduce((sum,k)=>sum+number(prefix+'_'+k),0);
+  const annualOperating=energyCost+fixedAnnual;
+  const residual=price*residualPercent/100;
+  const depreciation=price-residual;
+  const costParts=[depreciation,interest,annualDieselCost*years,annualAdblueCost*years,annualElectricityCost*years,fixedAnnual*years];
+  const tco=costParts.reduce((a,b)=>a+b,0),grossCash=down+payments+annualOperating*years,netCash=grossCash-residual;
+  const yearly=[];
+  for(let i=0;i<Math.ceil(months/12);i++){
+    const monthsThisYear=Math.min(12,months-i*12),fractionOfYear=monthsThisYear/12,fractionOfTerm=monthsThisYear/months;
+    const operating=annualOperating*fractionOfYear,dep=depreciation*fractionOfTerm,int=yearInterest[i]||0,pay=yearPayment[i]||0;
+    const resale=(i===Math.ceil(months/12)-1)?residual:0;
+    const cash=pay+operating+(i===0?down:0)-resale;
+    yearly.push({label:'Year '+(i+1)+(monthsThisYear<12?' ('+monthsThisYear+' mo)':''),months:monthsThisYear,km:annualKm*fractionOfYear,financing:pay,interest:int,operating,depreciation:dep,resale,economic:operating+dep+int,cash});
+  }
+  return {prefix,powertrain,months,years,annualKm,price,downPercent,down,principal,rate,residualPercent,residual,depreciation,payment:scheduledPayment,interest,payments,
+    annualDieselLitres,annualAdblueLitres,adblueKmPerL,annualDieselCost,annualAdblueCost,
+    kwhPerKm,chargingLoss,billedKwhPerKm,annualElectricityKwh,annualElectricityCost,energyCost,energyCostPerKm,
+    fixedAnnual,annualOperating,annualKmTotal:annualKm*years,costParts,tco,grossCash,netCash,monthlyTco:tco/months,costPerKm:annualKm*years>0?tco/(annualKm*years):0,yearly};
+}
+function write(id,value){el(id).textContent=value;}
+function metricRow(label,items,formatter=money,css=''){
+  const tr=document.createElement('tr');if(css)tr.className=css;
+  for(const [i,x] of [label,...items.map(item=>item===null||item===undefined?'—':formatter(item))].entries()){
+    const td=document.createElement('td');td.textContent=x;if(i===0)td.style.textAlign='left';tr.appendChild(td);
+  }
+  return tr;
+}
+function group(tbody,label,count){const tr=document.createElement('tr');tr.className='group';const td=document.createElement('td');td.textContent=label;td.colSpan=count;tr.appendChild(td);tbody.appendChild(tr);}
+function adjustPowertrain(prefix){
+  const diesel=el(prefix+'_type').value==='diesel';const panel=el(prefix+'_type').closest('.input-panel');
+  el(prefix+'_dieselFields').classList.toggle('hidden',!diesel);
+  el(prefix+'_electricFields').classList.toggle('hidden',diesel);
+  panel.classList.toggle('electric-mode',!diesel);
+  panel.querySelector('.input-heading span').textContent=diesel?'DIESEL':'ELECTRIC';
+  write(prefix+'_energyHeading',diesel?'Fuel & AdBlue efficiency':'Electricity consumption');
+  write(prefix+'_energyNote',diesel?'AdBlue efficiency (km/L) is calculated from diesel consumption and shown in the results.':'Electricity consumption is in kWh/km at the truck. Optional charging losses increase billable kWh; electricity price is set above.');
+}
+function renderBreakdown(a,b){
+  const holder=el('breakdowns');holder.replaceChildren();
+  for(const truck of [a,...(b?[b]:[])]){
+    const box=document.createElement('div');box.className='breakdown';
+    const caption=document.createElement('div');caption.className='bar-caption';
+    const title=document.createElement('span');title.textContent='Truck '+truck.prefix.toUpperCase()+' · '+(truck.powertrain==='diesel'?'Diesel':'Electric');
+    const total=document.createElement('span');total.textContent=money(truck.tco);caption.append(title,total);box.appendChild(caption);
+    const bar=document.createElement('div');bar.className='stacked';bar.setAttribute('role','img');bar.setAttribute('aria-label','Total ownership cost composition');
+    truck.costParts.forEach((v,i)=>{const seg=document.createElement('div');seg.className='bar-part';seg.style.background=colors[i];seg.style.width=(truck.tco>0?v/truck.tco*100:0)+'%';seg.title=categories[i]+': '+money(v);bar.appendChild(seg)});
+    box.appendChild(bar);const legend=document.createElement('div');legend.className='legend';
+    truck.costParts.forEach((v,i)=>{if(v===0&&(i===2||i===3||i===4))return;
+      const item=document.createElement('div');item.className='legend-item';const label=document.createElement('span'),dot=document.createElement('span');dot.className='dot';dot.style.background=colors[i];label.append(dot,document.createTextNode(categories[i]));const val=document.createElement('strong');val.textContent=money(v);const pct=document.createElement('span');pct.textContent=fmt(truck.tco>0?v/truck.tco*100:0,1)+'% of TCO';item.append(label,val,pct);legend.appendChild(item);});
+    box.appendChild(legend);holder.appendChild(box);
+  }
+}
+function renderSummary(a,b){
+  const table=el('summaryTable'),head=table.tHead,body=table.tBodies[0];head.replaceChildren();body.replaceChildren();
+  const tracks=[a,...(b?[b]:[])],hr=document.createElement('tr');
+  ['Cost component',...tracks.map(x=>'Truck '+x.prefix.toUpperCase()+' ('+(x.powertrain==='diesel'?'Diesel':'Electric')+')')].forEach(v=>{const th=document.createElement('th');th.textContent=v;hr.appendChild(th)});head.appendChild(hr);
+  const add=(label,fn,formatter=money,css='')=>body.appendChild(metricRow(label,tracks.map(fn),formatter,css));
+  group(body,'Acquisition & finance',tracks.length+1);
+  add('Vehicle price',t=>t.price);add('Down payment',t=>t.down);add('Financed principal',t=>t.principal);
+  add('Finance payment per month',t=>t.payment);add('Total finance interest',t=>t.interest);add('Total financing payments',t=>t.payments);
+  group(body,'Energy consumption & running costs',tracks.length+1);
+  add('Annual distance (km)',t=>t.annualKm,v=>fmt(v));
+  add('Diesel efficiency (km/L)',t=>t.powertrain==='diesel'?number(t.prefix+'_economy'):null,v=>fmt(v,2));
+  add('Annual diesel consumed (L)',t=>t.powertrain==='diesel'?t.annualDieselLitres:null,v=>fmt(v));
+  add('Annual diesel cost',t=>t.powertrain==='diesel'?t.annualDieselCost:null);
+  add('Annual AdBlue consumed (L)',t=>t.powertrain==='diesel'?t.annualAdblueLitres:null,v=>fmt(v,1));
+  add('AdBlue efficiency (km/L)',t=>t.powertrain==='diesel'?t.adblueKmPerL:null,v=>fmt(v,1));
+  add('Annual AdBlue cost',t=>t.powertrain==='diesel'?t.annualAdblueCost:null);
+  add('Electricity use (kWh/km at truck)',t=>t.powertrain==='electric'?t.kwhPerKm:null,v=>fmt(v,2));
+  add('Charging losses (%)',t=>t.powertrain==='electric'?t.chargingLoss:null,v=>fmt(v,1)+'%');
+  add('Grid electricity (kWh/km billed)',t=>t.powertrain==='electric'?t.billedKwhPerKm:null,v=>fmt(v,2));
+  add('Annual electricity consumed (kWh billed)',t=>t.powertrain==='electric'?t.annualElectricityKwh:null,v=>fmt(v));
+  add('Annual electricity cost',t=>t.powertrain==='electric'?t.annualElectricityCost:null);
+  add('Annual energy cost per km',t=>t.energyCostPerKm,v=>money(v,2));
+  add('Annual fixed running costs',t=>t.fixedAnnual);add('Annual operating costs total',t=>t.annualOperating);
+  group(body,'Depreciation & full-term results',tracks.length+1);
+  add('End-of-term resale value',t=>t.residual);add('Depreciation over term',t=>t.depreciation);add('Gross cash paid over term',t=>t.grossCash);
+  add('Less: resale proceeds',t=>t.residual);add('Net lifetime cash cost',t=>t.netCash,money,'emphasis');
+  add('Economic TCO (reconciled)',t=>t.tco,money,'emphasis');add('Average cost per month',t=>t.monthlyTco,money,'emphasis');
+  add('TCO per km',t=>t.costPerKm,v=>money(v,2),'emphasis');
+  write('summaryTag',b?'SIDE-BY-SIDE COMPARISON':'TRUCK A');
+}
+function renderAnnual(a,b){
+  const table=el('annualTable'),head=table.tHead,body=table.tBodies[0];head.replaceChildren();body.replaceChildren();
+  const columns=b?['Period','Distance (km)','Truck A · TCO','Truck B · TCO','Truck A · net cash','Truck B · net cash','Difference · B − A']:
+                  ['Period','Vehicle','Distance (km)','Financing paid','Interest','Operating','Depreciation','Resale credit','Economic TCO','Net cash paid'];
+  const header=document.createElement('tr');for(const c of columns){const th=document.createElement('th');th.textContent=c;header.appendChild(th)}head.appendChild(header);
+  if(b){
+    for(let i=0;i<a.yearly.length;i++){
+      const x=a.yearly[i],y=b.yearly[i];const tr=document.createElement('tr');
+      [x.label,fmt(x.km),money(x.economic),money(y.economic),money(x.cash),money(y.cash),money(y.economic-x.economic)].forEach((v,j)=>{const td=document.createElement('td');td.textContent=v;if(j===2||j===3)td.style.fontWeight='800';tr.appendChild(td)});body.appendChild(tr);
+    }
+    const total=document.createElement('tr');total.className='emphasis';
+    ['FULL TERM',fmt(a.annualKmTotal),money(a.tco),money(b.tco),money(a.netCash),money(b.netCash),money(b.tco-a.tco)].forEach(v=>{const td=document.createElement('td');td.textContent=v;total.appendChild(td)});body.appendChild(total);
+    write('annualTag',a.months+' MONTHS · SIDE BY SIDE');
+    write('annualCaption','Economic TCO = depreciation + financing interest + energy and other operating costs. Net cash adds down payment and finance payments and subtracts resale proceeds. Difference is Truck B less Truck A (negative favours B).');return;
+  }
+  for(const y of a.yearly){const tr=document.createElement('tr');
+    [y.label,'Truck A',fmt(y.km),money(y.financing),money(y.interest),money(y.operating),money(y.depreciation),money(y.resale),money(y.economic),money(y.cash)].forEach((v,j)=>{const td=document.createElement('td');td.textContent=v;if(j===8)td.style.fontWeight='800';tr.appendChild(td)});body.appendChild(tr);
+  }
+  const total=document.createElement('tr');total.className='emphasis';
+  ['FULL TERM','Truck A',fmt(a.annualKmTotal),money(a.payments),money(a.interest),money(a.annualOperating*a.years),money(a.depreciation),money(a.residual),money(a.tco),money(a.netCash)].forEach(v=>{const td=document.createElement('td');td.textContent=v;total.appendChild(td)});body.appendChild(total);
+  write('annualTag',a.months+' MONTHS');
+  write('annualCaption','Net cash includes down payment, loan payments and running costs, less resale proceeds. Economic TCO uses straight-line depreciation plus finance interest and running costs; both reconcile over the full term.');
+}
+function renderComparison(a,b){
+  el('comparisonDashboard').classList.toggle('hidden',!b);if(!b)return;
+  write('compareCardTitle', 'Truck A ('+(a.powertrain==='diesel'?'Diesel':'Electric')+') vs Truck B ('+(b.powertrain==='diesel'?'Diesel':'Electric')+')');
+  for(const [P,t] of [['A',a],['B',b]]){
+    const vals={Price:money(t.price),PerKm:money(t.costPerKm,2),Total:money(t.tco),Monthly:money(t.monthlyTco),Finance:money(t.payment),Op:money(t.annualOperating),Dep:money(t.depreciation),Res:money(t.residual),Energy:money(t.energyCost),EnergyUse:t.powertrain==='diesel'?fmt(t.annualDieselLitres)+' L diesel/year':fmt(t.annualElectricityKwh)+' kWh/year'};
+    for(const [k,v] of Object.entries(vals))write('compare'+P+k,v);
+    const max=Math.max(a.costPerKm,b.costPerKm,0.01);
+    el('compare'+P+'Bar').style.width=(t.costPerKm/max*100)+'%';
+    const badge=el('compareCard'+P).querySelector('.truck-name-tag');badge.textContent='TRUCK '+P+' · '+t.powertrain.toUpperCase();
+  }
+  const diff=b.tco-a.tco;
+  el('compareCardA').classList.toggle('cheaper',diff>0.005);el('compareCardB').classList.toggle('cheaper',diff < -0.005);
+  if(Math.abs(diff)<0.01)write('comparisonVerdict','Both trucks have the same overall TCO');
+  else write('comparisonVerdict',(diff>0?'Truck A':'Truck B')+' saves '+money(a.annualKmTotal>0?Math.abs(diff)/a.annualKmTotal:0,2)+'/km · '+money(Math.abs(diff))+' over the term');
+}
+function update(){
+  const compare=el('compare').checked;
+  el('compareInputs').classList.toggle('visible',compare);el('mainLayout').classList.toggle('comparison-on',compare);
+  adjustPowertrain('a');adjustPowertrain('b');
+  const a=calculate('a'),b=compare?calculate('b'):null;latest={a,b};
+  write('kpiPerKm',money(a.costPerKm,2));write('kpiDistance',fmt(a.annualKmTotal)+' km over '+a.months+' months');
+  write('kpiTotal',money(a.tco));write('kpiTerm',a.months+'-month ownership cost');write('kpiMonth',money(a.monthlyTco));write('kpiPayment',money(a.payment));
+  el('kpiDiff').classList.toggle('hidden',!b);
+  if(b){const diff=b.costPerKm-a.costPerKm;write('kpiDiff',(diff>=0?'Truck B costs ':'Truck B saves ')+money(Math.abs(diff),2)+' / km vs A');el('kpiDiff').className='kpi-compare '+(diff>=0?'comp-more':'comp-savings');}
+  renderComparison(a,b);renderBreakdown(a,b);renderSummary(a,b);renderAnnual(a,b);
+}
+function syncResidual(id){
+  for(const p of ['a','b']){
+    if(id===p+'_residualValue'){
+      const price=number(p+'_price'),amount=Math.min(price,number(p+'_residualValue'));
+      el(p+'_residualValue').value=amount;
+      el(p+'_residual').value=price>0?Number((100*amount/price).toFixed(6)):0;
+    }else if(id===p+'_residual'||id===p+'_price'){
+      el(p+'_residualValue').value=Math.round(number(p+'_price')*number(p+'_residual')/100);
+    }
+  }
+}
+for(const input of document.querySelectorAll('input,select')){
+  input.addEventListener(input.tagName==='SELECT'?'change':'input',()=>{syncResidual(input.id);update()});
+}
+el('resetBtn').addEventListener('click',()=>{
+  for(const [k,v] of Object.entries(defaults))el(k).value=v;
+  el('a_type').value=initialPowertrains.a;el('b_type').value=initialPowertrains.b;
+  el('compare').checked=true;update();
+});
+el('printBtn').addEventListener('click',()=>window.print());
+el('csvBtn').addEventListener('click',()=>{
+  if(!latest)return;
+  const a=latest.a,b=latest.b,rows=[['UD Trucks Thailand - Diesel vs Electric Total Cost of Ownership'],['Metric','Truck A'+(a?' ('+a.powertrain+')':''),...(b?['Truck B ('+b.powertrain+')']:[])]];
+  const add=key=>rows.push([key,a[key],...(b?[b[key]]:[])]);
+  ['powertrain','months','price','downPercent','down','principal','rate','payment','interest','payments','annualKm','annualDieselLitres','annualDieselCost','annualAdblueLitres','adblueKmPerL','annualAdblueCost','kwhPerKm','chargingLoss','annualElectricityKwh','annualElectricityCost','energyCost','energyCostPerKm','fixedAnnual','annualOperating','residualPercent','residual','depreciation','grossCash','netCash','tco','monthlyTco','costPerKm'].forEach(add);
+  rows.push([],['Annual cash flow'],['Year','Truck','Kilometres','Finance payments','Interest','Operating costs','Depreciation','Resale proceeds','Economic TCO','Net cash flow']);
+  for(const t of [a,...(b?[b]:[])])for(const y of t.yearly)rows.push([y.label,'Truck '+t.prefix.toUpperCase()+' ('+t.powertrain+')',y.km,y.financing,y.interest,y.operating,y.depreciation,y.resale,y.economic,y.cash]);
+  rows.push([],['Assumptions','Effective annual financing, full amortization, resale proceeds to operator, consistent mileage/energy prices, optional charging losses, no VAT/inflation/charging installation unless in Other costs']);
+  const csv='\ufeff'+rows.map(r=>r.map(escapeCsv).join(',')).join('\r\n');
+  const url=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8;'}));
+  const link=document.createElement('a');link.href=url;link.download='UD_Diesel_vs_Electric_TCO_Analysis.csv';document.body.appendChild(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),5000);
+});
+update();
+</script>
+</body>
+</html>
