@@ -114,7 +114,7 @@
     <button id="comparisonNav"><span>↔</span>เทียบคู่แข่ง</button>
     <button id="categoryNav"><span>2</span>หมวดหมู่สินค้า</button>
     <button id="skuNav" disabled><span>3</span>รายละเอียด SKU</button>
-    <div class="rail-context"><b>เริ่มกว้าง แล้วค่อยเจาะลึก</b>เลือกหมวด → เลือก SKU<br>→ คู่เทียบ 3 แบรนด์ที่ Nestlé กำหนด</div>
+    <div class="rail-context"><b>ขอบเขตตาม Project B brief</b>4 หมวดคู่แข่ง · 7 กลุ่ม Nestlé<br>→ คู่เทียบ 3 แบรนด์ตัวอย่าง รอ Nestlé ยืนยัน</div>
     <div class="railnote"><b>ข้อมูลจำลอง · DEMO</b>ตัวอย่างสำหรับสาธิตวิธีใช้งาน<br>ยังไม่มีการเชื่อมต่อแพลตฟอร์มจริง</div>
   </aside>
   <div class="demo-workspace">
@@ -133,7 +133,7 @@
     </div>
     <main class="demo-main" id="demoMain" tabindex="-1">
     <div class="demotop">
-      <div class="demotitle"><h1>Market pulse</h1><p>100 SKU ของ Nestlé · คู่เทียบ 3 แบรนด์ที่ลูกค้ากำหนด · ภาพรวมและราย platform</p></div>
+      <div class="demotitle"><h1>Market pulse</h1><p>7 กลุ่มแบรนด์ Nestlé · 4 หมวดคู่แข่ง · 4 ช่องทาง · จำลอง daily run</p></div>
       <div><div class="demoactions"><span class="sample">SAMPLE DATA · NOT LIVE</span><button class="btn light" id="back">← Pitch</button><button class="btn" id="refresh">↻ จำลอง daily run</button></div><div class="run-feedback" id="runFeedback">Snapshot ตัวอย่าง: 02 พ.ย. 2026 · 09:00 น.</div></div>
     </div>
     <nav class="crumbs" id="breadcrumbs" aria-label="ตำแหน่งปัจจุบัน"></nav>
@@ -152,100 +152,96 @@
 (function(){
 "use strict";
 var slides=Array.from(document.querySelectorAll(".slide")),cur=0,deck=document.getElementById("deck"),foot=document.getElementById("foot"),demo=document.getElementById("demo"),main=document.getElementById("demoMain"),view=document.getElementById("demoView"),dots=document.getElementById("dots"),toastTimer,lastDemoHash="#demo",lastFocus=null;
-/* Generated sample catalogue. Every product, price and mapping is illustrative.
-   Mapping ownership belongs to Nestlé; defaults below are unconfirmed demo choices. */
+/* Project B sample catalogue aligned to the 09 Oct brief.
+   Products, prices, competitor placeholders, and Nestle-group/category assignments
+   are illustrative only. Nestle confirms product scope and competitor SKU mappings. */
 function buildSampleCatalog(){
   var competitorBrands=[
-    {id:"brand-a",name:"Brand A",color:"#8d68ab"},
-    {id:"brand-b",name:"Brand B",color:"#d28b42"},
-    {id:"brand-c",name:"Brand C",color:"#338c89"}
+    {id:"brand-a",name:"Brand A",color:"#8d68ab",sample:true},
+    {id:"brand-b",name:"Brand B",color:"#d28b42",sample:true},
+    {id:"brand-c",name:"Brand C",color:"#338c89",sample:true}
   ];
   var platforms=["Shopee","Lazada","TikTok Shop","7-Eleven Delivery"];
-  var specs=[
-    {id:"infant",name:"โภชนาการเด็ก",en:"Infant Nutrition",color:"#8068a7",bg:"#f1edf8",symbol:"bottle",kind:"grams",stem:"โภชนาการเด็ก",unitRate:1.55,sizes:[400,600,800,900,1200,1600,1800,2400,3000,3600],variants:["รุ่น 01","รุ่น 02","รุ่น 03","รุ่น 04","รุ่น 05","รุ่น 06","รุ่น 07","รุ่น 08","รุ่น 09","รุ่น 10"]},
-    {id:"adult",name:"โภชนาการผู้ใหญ่",en:"Adult Nutrition",color:"#5683b1",bg:"#ebf2fa",symbol:"leaf",kind:"grams",stem:"โภชนาการผู้ใหญ่",unitRate:1.95,sizes:[200,300,400,600,800,900,1000,1200,1600,2000],variants:["รุ่น 01","รุ่น 02","รุ่น 03","รุ่น 04","รุ่น 05","รุ่น 06","รุ่น 07","รุ่น 08","รุ่น 09","รุ่น 10"]},
-    {id:"coffee",name:"กาแฟสำเร็จรูป",en:"Instant Coffee",color:"#a47546",bg:"#f7eee4",symbol:"cup",kind:"grams",stem:"กาแฟสำเร็จรูป",unitRate:1.85,sizes:[50,90,100,180,200,250,300,400,500,600],variants:["คลาสสิก","คั่วกลาง","เข้ม","นุ่ม","โกลด์","อาราบิกา","โรบัสต้า","ดีแคฟ","เอสเปรสโซ","ออริจิน"]},
-    {id:"capsules",name:"กาแฟแคปซูล",en:"Coffee Capsules",color:"#ad7154",bg:"#f8eee8",symbol:"cup",kind:"pieces",stem:"กาแฟแคปซูล",unitRate:20,sizes:[8,10,12,16,20,24,30,32,40,48],variants:["เอสเปรสโซ","อเมริกาโน","ลาเต้","คาปูชิโน","มอคค่า","ลุงโก","คาเฟ่โอเลต์","แฟลตไวท์","เข้ม","ดีแคฟ"]},
-    {id:"cat-food",name:"อาหารแมว",en:"Cat Food",color:"#358a74",bg:"#eaf5ef",symbol:"paw",kind:"grams",stem:"อาหารแมว",unitRate:.31,sizes:[400,800,1000,1200,1500,2000,3000,5000,7000,10000],variants:["ไก่","ปลา","ทูน่า","แซลมอน","เป็ด","เนื้อ","สูตรรวม","ไก่และปลา","ปลาและข้าว","ไก่และข้าว"]},
-    {id:"dog-food",name:"อาหารสุนัข",en:"Dog Food",color:"#5c9270",bg:"#edf5ec",symbol:"paw",kind:"grams",stem:"อาหารสุนัข",unitRate:.18,sizes:[500,1000,1500,2000,3000,5000,7500,10000,15000,20000],variants:["ไก่","เนื้อ","แซลมอน","ปลา","เป็ด","ไก่และข้าว","เนื้อและข้าว","สูตรรวม","ปลาและข้าว","รุ่น 10"]},
-    {id:"milk-powder",name:"นมผง",en:"Milk Powder",color:"#6a9dac",bg:"#eaf4f7",symbol:"bottle",kind:"grams",stem:"นมผง",unitRate:.72,sizes:[200,400,600,800,1000,1200,1600,1800,2000,2500],variants:["รุ่น 01","รุ่น 02","รุ่น 03","รุ่น 04","รุ่น 05","รุ่น 06","รุ่น 07","รุ่น 08","รุ่น 09","รุ่น 10"]},
-    {id:"rtd-milk",name:"นมพร้อมดื่ม",en:"Ready-to-drink Milk",color:"#679eb1",bg:"#edf6f9",symbol:"bottle",kind:"ml",stem:"นมพร้อมดื่ม",unitRate:.095,sizes:[180,200,225,250,300,350,500,750,1000,1500],variants:["จืด","ช็อกโกแลต","สตรอว์เบอร์รี","กาแฟ","วานิลลา","มอลต์","คาราเมล","กล้วย","รุ่น 09","รุ่น 10"]},
-    {id:"chocolate",name:"เครื่องดื่มช็อกโกแลต",en:"Chocolate Drinks",color:"#9c715d",bg:"#f7f0ea",symbol:"cup",kind:"grams",stem:"เครื่องดื่มช็อกโกแลต",unitRate:.39,sizes:[100,200,300,400,500,600,800,1000,1200,1500],variants:["คลาสสิก","เข้ม","มอลต์","วานิลลา","มอคค่า","คาราเมล","รุ่น 07","รุ่น 08","รุ่น 09","รุ่น 10"]},
-    {id:"culinary",name:"ผลิตภัณฑ์ปรุงอาหาร",en:"Culinary Products",color:"#b59147",bg:"#f9f4e7",symbol:"leaf",kind:"grams",stem:"ผลิตภัณฑ์ปรุงอาหาร",unitRate:.29,sizes:[50,100,150,200,250,400,500,800,1000,1200],variants:["ผงปรุงรส","ซุปผง","เครื่องปรุงไก่","เครื่องปรุงผัก","ผงซุปเห็ด","ซุปก้อน","ผงปรุงรสปลา","เครื่องปรุงเนื้อ","ผงซุปข้าวโพด","รุ่น 10"]}
+  var categories=[
+    {id:"infant",name:"โภชนาการเด็ก",en:"Infant Nutrition",color:"#8068a7",bg:"#f1edf8",symbol:"bottle",unitRate:1.55},
+    {id:"coffee",name:"กาแฟ",en:"Coffee",color:"#a47546",bg:"#f7eee4",symbol:"cup",unitRate:1.85},
+    {id:"pet",name:"อาหารสัตว์เลี้ยง",en:"Pet Food",color:"#358a74",bg:"#eaf5ef",symbol:"paw",unitRate:.31},
+    {id:"adult",name:"โภชนาการผู้ใหญ่",en:"Adult Nutrition",color:"#5683b1",bg:"#ebf2fa",symbol:"leaf",unitRate:.95}
   ];
-  var categories=specs.map(function(s){
-    return {id:s.id,name:s.name,en:s.en,color:s.color,bg:s.bg,symbol:s.symbol,
-      sample:true,scopeNote:"หมวดสาธิตเพื่อแสดงปริมาณข้อมูล ไม่ใช่การยืนยันขอบเขต RFP"};
-  });
-  var brands=[{id:"nestle",name:"Nestlé",color:"#07559a"}].concat(competitorBrands);
-  var skus=[],offers=[],mappings=[];
+  var brandGroups=[
+    {id:"s26",name:"S-26",category:"infant",kind:"grams",prefix:"Infant nutrition",sizes:[400,600,800,900,1200,1600,1800,2400,3000,3600]},
+    {id:"nestle-milk",name:"Nestlé Milk",category:"adult",kind:"grams",prefix:"Milk nutrition",sizes:[200,300,400,600,800,900,1000,1200,1600,2000]},
+    {id:"fnb",name:"F&B",category:"coffee",kind:"grams",prefix:"Coffee and beverage",sizes:[50,90,100,180,200,250,300,400,500,600]},
+    {id:"purina",name:"Purina",category:"pet",kind:"grams",prefix:"Pet nutrition",sizes:[400,800,1000,1200,1500,2000,3000,5000,7000,10000]},
+    {id:"dolce-gusto",name:"Nestlé Dolce Gusto",category:"coffee",kind:"pieces",prefix:"Coffee capsule",sizes:[6,8,10,12,16,20,24,30,32,40]},
+    {id:"health-science",name:"Nestlé Health Science",category:"adult",kind:"grams",prefix:"Adult nutrition",sizes:[200,300,400,600,800,900,1000,1200,1600,2000]},
+    {id:"professional",name:"Nestlé Professional",category:"coffee",kind:"grams",prefix:"Professional coffee",sizes:[50,90,100,180,200,250,300,400,500,600]}
+  ];
+  var groupNames={};brandGroups.forEach(function(g){groupNames[g.id]=g.name});
+  categories.forEach(function(c){c.brandGroupIds=brandGroups.filter(function(g){return g.category===c.id}).map(function(g){return g.id});c.sample=true});
+  var skus=[],offers=[],mappings=[],offersBySku={},competitorPools={};
   function pad(n){return String(n).padStart(2,"0")}
-  function quantityFor(spec,ordinal,brandIndex){
-    var q=spec.sizes[ordinal-1],factor=[1,.8,1.1,1.25][brandIndex];
-    if(spec.kind==="pieces")return Math.max(4,Math.round(q*factor/2)*2);
-    if(spec.kind==="ml")return Math.max(100,Math.round(q*factor/25)*25);
-    return Math.max(25,Math.round(q*factor/10)*10);
-  }
-  function quantityLabel(kind,q){
-    if(kind==="pieces")return "กล่อง "+q+" แคปซูล";
-    if(kind==="ml")return "แพ็ก "+q.toLocaleString("en-US")+" มล.";
-    return q>=1000?"แพ็ก "+Number((q/1000).toFixed(2))+" กิโลกรัม":"แพ็ก "+q+" กรัม";
-  }
-  function missingOffer(catIndex,ordinal,brandIndex,platformIndex){
-    if(catIndex===0&&ordinal===1&&brandIndex===0&&platformIndex===3)return true;
-    if(platformIndex===3&&(catIndex*17+ordinal*5+brandIndex*3)%19===0)return true;
-    if(platformIndex===2&&ordinal===10&&catIndex%3===0&&brandIndex===2)return true;
-    return false;
-  }
-  specs.forEach(function(spec,catIndex){
-    for(var ordinal=1;ordinal<=10;ordinal++){
-      brands.forEach(function(brand,brandIndex){
-        var q=quantityFor(spec,ordinal,brandIndex);
-        var id=brand.id+"-"+spec.id+"-"+pad(ordinal);
-        var code=(brandIndex===0?"N":"C"+brandIndex)+"-"+spec.id.toUpperCase()+"-"+pad(ordinal);
-        var title=spec.stem+" "+spec.variants[ordinal-1]+" · ตัวอย่าง";
-        var s={id:id,name:brand.name+" "+title+" · "+q+" "+spec.kind,title:title,
-          variant:quantityLabel(spec.kind,q),category:spec.id,
-          brand:brandIndex===0?"Nestlé":"Competitor",brandId:brand.id,brandName:brand.name,
-          code:code,ordinal:ordinal,synthetic:true,form:"ตัวอย่าง "+spec.variants[ordinal-1],
-          scopeNote:"สินค้าและขนาดแพ็กจำลอง ไม่ใช่ SKU master จริง"};
-        s[spec.kind]=q;
-        skus.push(s);
-        platforms.forEach(function(platform,platformIndex){
-          if(missingOffer(catIndex,ordinal,brandIndex,platformIndex))return;
-          var variantFactor=1+(ordinal-1)*.014;
-          var brandFactor=[1,.91,1.045,1.11][brandIndex]+(((ordinal+catIndex+brandIndex*2)%5)-2)*.025;
-          var channelFactor=[1.025,1.045,.985,.96][platformIndex]+(((ordinal+brandIndex)%3)-1)*.012;
-          var list=Math.max(20,Math.round(q*spec.unitRate*variantFactor*brandFactor*channelFactor));
-          var skuDiscount=Math.round(list*(.035+((ordinal+platformIndex)%4)*.012));
-          var storeVoucher=(ordinal+brandIndex+platformIndex)%4===0?0:Math.round(list*(.018+brandIndex*.004));
-          var platformVoucher=(ordinal+platformIndex)%6===0?0:Math.round(list*(.025+platformIndex*.006));
-          var ship=platformIndex===3?((ordinal+brandIndex)%3===0?0:30):((ordinal+platformIndex)%7===0?25:0);
-          var net=list-skuDiscount-storeVoucher-platformVoucher;
-          offers.push({id:offers.length,skuId:s.id,p:platform,name:s.name,brand:s.brand,brandId:s.brandId,
-            brandName:s.brandName,cat:spec.en,store:platformIndex===3?"สาขาจำลอง · พื้นที่สาธิต":brand.name+" Demo Store",
-            list:list,sku:skuDiscount,sv:storeVoucher,pv:platformVoucher,ship:ship,net:net,pay:net+ship,
-            units:spec.kind==="pieces"?q:1,synthetic:true,
-            snapshotAt:"2026-11-02T09:00:00+07:00",
-            terms:"ราคา ส่วนลด และ voucher จำลองเพื่อสาธิต · ยังไม่ได้ตรวจ eligibility, ยอดขั้นต่ำ หรือพื้นที่จัดส่งจากแพลตฟอร์มจริง"});
-        });
-        if(brandIndex>0){
-          mappings.push({id:"map-"+spec.id+"-"+pad(ordinal)+"-"+brand.id,
-            nestleId:"nestle-"+spec.id+"-"+pad(ordinal),competitorId:s.id,
-            competitorBrandId:brand.id,category:spec.id,assignedBy:"Nestlé",status:"demo-pending",
-            assignmentSource:"customer-defined-demo",
-            rationale:"คู่เทียบเริ่มต้นสำหรับสาธิต ลูกค้า Nestlé เป็นผู้กำหนดและยืนยัน SKU คู่แข่งจริง"});
-        }
-      });
+  function dimension(s){return s.kind||"grams"}
+  function quantityLabel(kind,q){return kind==="pieces"?"กล่อง "+q+" แคปซูล":"แพ็ก "+q.toLocaleString("en-US")+" กรัม"}
+  function categoryById(id){return categories.find(function(c){return c.id===id})}
+  function addSku(s){s.synthetic=true;skus.push(s);return s}
+  brandGroups.forEach(function(g){
+    var cat=categoryById(g.category),sizes=g.sizes;
+    for(var i=1;i<=10;i++){
+      var q=sizes[i-1],title=g.prefix+" · Sample SKU "+pad(i),code="N-"+g.id.toUpperCase()+"-"+pad(i);
+      addSku({id:"nestle-"+g.id+"-"+pad(i),name:"Nestlé "+g.name+" "+title+" · "+quantityLabel(g.kind,q),title:title,variant:quantityLabel(g.kind,q),category:g.category,brand:"Nestlé",brandId:"nestle",brandName:"Nestlé",nestleGroupId:g.id,nestleGroupName:g.name,nestleCategoryMapping:"illustrative-pending-confirmation",code:code,ordinal:i,kind:g.kind,[g.kind]:q,scopeNote:"Illustrative SKU; not an approved product-master record"});
     }
   });
-  return {categories:categories,skus:skus,offers:offers,competitorBrands:competitorBrands,mappings:mappings,
-    snapshotAt:"2026-11-02T09:00:00+07:00",synthetic:true,
-    scopeNote:"ชุดข้อมูลสาธิต 10 หมวด: 100 SKU Nestlé และ 300 SKU คู่แข่งจาก Brand A/B/C; ไม่ใช่รายการสินค้า ราคา หรือ mapping จริงที่ได้รับอนุมัติ"};
+  /* Competitor brands are unnamed placeholders because the brief leaves the
+     actual competitor brands and SKU list for Nestle to provide. */
+  competitorBrands.forEach(function(brand,brandIndex){
+    categories.forEach(function(cat,categoryIndex){
+      var kinds=Array.from(new Set(brandGroups.filter(function(g){return g.category===cat.id}).map(dimension)));
+      kinds.forEach(function(kind){
+        var poolKey=cat.id+"|"+kind;competitorPools[brand.id+"|"+poolKey]=[];
+        var representativeGroup=brandGroups.find(function(g){return g.category===cat.id&&g.kind===kind}),sizes=representativeGroup?representativeGroup.sizes:(kind==="pieces"?[6,8,10,12,16,20,24,30,32,40]:[400,600,800,900,1200,1600,1800,2400,3000,3600]);
+        for(var i=1;i<=10;i++){
+          var q=sizes[i-1],label=kind==="pieces"?"Coffee capsule":"Sample "+cat.en.toLowerCase(),title=label+" · Sample SKU "+pad(i),code="C"+(brandIndex+1)+"-"+cat.id.toUpperCase()+"-"+kind.toUpperCase()+"-"+pad(i),id=brand.id+"-"+cat.id+"-"+kind+"-"+pad(i);
+          var item=addSku({id:id,name:brand.name+" "+title+" · "+quantityLabel(kind,q),title:title,variant:quantityLabel(kind,q),category:cat.id,brand:"Competitor",brandId:brand.id,brandName:brand.name,nestleGroupId:null,nestleGroupName:"",code:code,ordinal:i,kind:kind,[kind]:q,scopeNote:"Fictional competitor placeholder; not a brand or SKU named in the brief"});
+          competitorPools[brand.id+"|"+poolKey].push(item);
+        }
+      });
+    });
+  });
+  var own=skus.filter(function(s){return s.brandId==="nestle"});
+  own.forEach(function(n){
+    var group=brandGroups.find(function(g){return g.id===n.nestleGroupId}),cat=categoryById(n.category),poolKey=n.category+"|"+dimension(n);
+    competitorBrands.forEach(function(brand){
+      var pool=competitorPools[brand.id+"|"+poolKey],peer=pool[(n.ordinal-1)%pool.length];
+      mappings.push({id:"map-"+n.nestleGroupId+"-"+pad(n.ordinal)+"-"+brand.id,nestleId:n.id,competitorId:peer.id,competitorBrandId:brand.id,category:n.category,nestleGroupId:group.id,assignedBy:"Nestlé",status:"demo-pending",assignmentSource:"customer-defined-demo",rationale:"Illustrative category and peer assignment; Nestlé confirms actual brand-group/category fit and competitor SKU"});
+    });
+  });
+  var platformColors={"Shopee":"#eb7955","Lazada":"#dcaf43","TikTok Shop":"#8f6cae","7-Eleven Delivery":"#448e78"};
+  function missingOffer(s,platformIndex){
+    if(s.id==="nestle-s26-01"&&platformIndex===3)return true;
+    if(platformIndex===3&&(s.ordinal*7+s.category.length+(s.brandId.charCodeAt(s.brandId.length-1)||0))%31===0)return true;
+    if(platformIndex===2&&s.ordinal===10&&s.brandId==="brand-c"&&s.category==="coffee")return true;
+    return false;
+  }
+  skus.forEach(function(s){
+    var cat=categoryById(s.category),brandIndex=s.brandId==="nestle"?0:competitorBrands.findIndex(function(b){return b.id===s.brandId})+1,storeBrand=brandIndex===0?"Nestlé":competitorBrands[brandIndex-1].name;
+    platforms.forEach(function(platform,platformIndex){
+      if(missingOffer(s,platformIndex))return;
+      var variantFactor=1+(s.ordinal-1)*.014,brandFactor=[1,.91,1.045,1.11][brandIndex]+(((s.ordinal+categories.findIndex(function(c){return c.id===s.category})+brandIndex*2)%5)-2)*.025;
+      var channelFactor=[1.025,1.045,.985,.96][platformIndex]+(((s.ordinal+brandIndex)%3)-1)*.012;
+      var list=Math.max(20,Math.round(s[s.kind]*cat.unitRate*variantFactor*brandFactor*channelFactor));
+      var skuDiscount=Math.round(list*(.035+((s.ordinal+platformIndex)%4)*.012));
+      var storeVoucher=(s.ordinal+brandIndex+platformIndex)%4===0?0:Math.round(list*(.018+brandIndex*.004));
+      var platformVoucher=(s.ordinal+platformIndex)%6===0?0:Math.round(list*(.025+platformIndex*.006));
+      var ship=platformIndex===3?((s.ordinal+brandIndex)%3===0?0:30):((s.ordinal+platformIndex)%7===0?25:0),net=list-skuDiscount-storeVoucher-platformVoucher;
+      offers.push({id:offers.length,skuId:s.id,p:platform,name:s.name,brand:s.brand,brandId:s.brandId,brandName:s.brandName,cat:cat.en,store:platformIndex===3?"Sample 7-Eleven location":storeBrand+" Demo Store",list:list,sku:skuDiscount,sv:storeVoucher,pv:platformVoucher,ship:ship,net:net,pay:net+ship,units:s[s.kind],synthetic:true,snapshotAt:"2026-11-02T09:00:00+07:00",terms:"Illustrative price, SKU discount, and voucher terms; not captured from a live platform"});
+    });
+  });
+  return {categories:categories,brandGroups:brandGroups,skus:skus,offers:offers,competitorBrands:competitorBrands,mappings:mappings,platforms:platforms,synthetic:true,snapshotAt:"2026-11-02T09:00:00+07:00",scopeNote:"Aligned to Project B brief: 4 competitor categories, 7 Nestle brand/business groups, 4 platforms, daily extraction. Sample coverage (SKU counts, prices, competitor brands, and group/category associations) is illustrative and pending Nestle confirmation.",platformColors:platformColors};
 }
 
 var sampleCatalog=buildSampleCatalog();
-var categories=sampleCatalog.categories,skuDefs=sampleCatalog.skus,data=sampleCatalog.offers,competitorBrands=sampleCatalog.competitorBrands,comparisonMappings=sampleCatalog.mappings;
+var categories=sampleCatalog.categories,brandGroups=sampleCatalog.brandGroups,skuDefs=sampleCatalog.skus,data=sampleCatalog.offers,competitorBrands=sampleCatalog.competitorBrands,comparisonMappings=sampleCatalog.mappings
 var platforms=["Shopee","Lazada","TikTok Shop","7-Eleven Delivery"];
 var platformColors={"Shopee":"#eb7955","Lazada":"#dcaf43","TikTok Shop":"#8f6cae","7-Eleven Delivery":"#448e78"};
 var offersBySku={};data.forEach(function(r){if(!offersBySku[r.skuId])offersBySku[r.skuId]=[];offersBySku[r.skuId].push(r)});
@@ -274,18 +270,18 @@ function packArt(s){var c=catBy(s.category),shape;
  else{shape='<rect x="17" y="14" width="54" height="75" rx="8" fill="#fff" stroke="'+c.color+'" stroke-opacity=".35"/><ellipse cx="44" cy="15" rx="27" ry="6" fill="#e0e9ee"/><rect x="17" y="38" width="54" height="29" fill="'+c.color+'"/><ellipse cx="44" cy="89" rx="25" ry="4" fill="'+c.color+'" opacity=".1"/>'}
  return '<div class="pack-art" style="'+styleCat(c)+'"><svg viewBox="0 0 90 105" role="img" aria-label="ภาพแพ็กเกจจำลอง">'+shape+'<text x="44" y="56" text-anchor="middle" font-family="Arial,sans-serif" font-size="8" fill="white" font-weight="bold">DEMO</text></svg><span class="art-label">ภาพประกอบจำลอง</span></div>'}
 function tags(s){var a=skuOffers(s);return platforms.map(function(p){var yes=a.some(function(r){return r.p===p});return '<span class="platform-tag'+(yes?"":" missing")+'">'+esc(p==="7-Eleven Delivery"?"7-Eleven":p)+(yes?"":" · ไม่มีตัวอย่าง")+'</span>'}).join("")}
-function skuCard(s){var x=stats(s),c=catBy(s.category);return '<button class="sku-card" data-sku="'+s.id+'" aria-label="ดูรายละเอียด '+esc(s.title)+' '+esc(s.variant)+'"><div class="sku-card-top">'+packArt(s)+'<div><span class="brand-label '+(s.brandId!=="nestle"?"competitor":"")+'">'+esc(s.brandName)+" · ตัวอย่าง"+'</span><h3>'+esc(s.title)+'</h3><div class="variant">'+esc(s.variant)+'<br>'+esc(c.name)+'</div></div></div><div class="sku-card-prices"><small>ช่วงราคาสุทธิของ SKU นี้ · ไม่รวมค่าส่ง</small><div class="price-range">'+money(x.min)+'–'+money(x.max)+' <span>/'+packLabel(s)+'</span></div></div><div class="sku-card-bottom"><div class="card-cta"><span>เทียบราคา '+x.channels+' ช่องทาง</span><span>ดู SKU →</span></div><div class="platform-tags">'+tags(s)+'</div></div></button>'}
+function skuCard(s){var x=stats(s),c=catBy(s.category),group=s.nestleGroupName?"Nestlé group · "+s.nestleGroupName:"Competitor SKU · "+c.en;return '<button class="sku-card" data-sku="'+s.id+'" aria-label="ดูรายละเอียด '+esc(s.title)+' '+esc(s.variant)+'"><div class="sku-card-top">'+packArt(s)+'<div><span class="brand-label '+(s.brandId!=="nestle"?"competitor":"")+'">'+esc(s.brandName)+" · ตัวอย่าง"+'</span><h3>'+esc(s.title)+'</h3><div class="variant">'+esc(group)+'<br>'+esc(s.variant)+'<br>'+esc(c.name)+'</div></div></div><div class="sku-card-prices"><small>ช่วงราคาสุทธิของ SKU นี้ · ไม่รวมค่าส่ง</small><div class="price-range">'+money(x.min)+'–'+money(x.max)+' <span>/'+packLabel(s)+'</span></div></div><div class="sku-card-bottom"><div class="card-cta"><span>เทียบราคา '+x.channels+' ช่องทาง</span><span>ดู SKU →</span></div><div class="platform-tags">'+tags(s)+'</div></div></button>'}
 function filterKey(){return state.category||"all"}
 function activeFilter(){var k=filterKey();if(!filters[k])filters[k]={q:"",brand:"nestle",page:1};return filters[k]}
-function getCatalog(){var f=activeFilter(),q=normalizeSearch(f.q);return skuDefs.filter(function(s){var c=catBy(s.category),hay=normalizeSearch([s.name,s.title,s.variant,s.brandName,s.code,c.name,c.en].join(" "));return(!state.category||s.category===state.category)&&(f.brand==="all"||s.brandId===f.brand)&&(!q||hay.indexOf(q)!==-1)})}
+function getCatalog(){var f=activeFilter(),q=normalizeSearch(f.q);return skuDefs.filter(function(s){var c=catBy(s.category),hay=normalizeSearch([s.name,s.title,s.variant,s.brandName,s.nestleGroupName||"",s.code,c.name,c.en].join(" "));return(!state.category||s.category===state.category)&&(f.brand==="all"||s.brandId===f.brand)&&(!q||hay.indexOf(q)!==-1)})}
 function toolbar(){var f=activeFilter(),brands=[["nestle","Nestlé"]].concat(competitorBrands.map(function(b){return[b.id,b.name]})).concat([["all","ทุกแบรนด์"]]);return '<div class="browse-toolbar"><div class="toolbar-title">เลือกสินค้า</div><div class="brand-filters" role="group" aria-label="กรองแบรนด์สินค้า">'+brands.map(function(a){return '<button data-brand="'+a[0]+'" class="'+(a[0]===f.brand?"active":"")+'" aria-pressed="'+(a[0]===f.brand)+'">'+a[1]+'</button>'}).join("")+'</div></div><p class="sku-result-count" id="skuResultCount"></p><div class="sku-grid" id="skuCatalog"></div><nav class="catalog-pagination" id="skuPagination" aria-label="หน้ารายการสินค้า"></nav>'}
 function renderCatalog(){var list=getCatalog(),f=activeFilter(),pages=Math.max(1,Math.ceil(list.length/10));f.page=Math.max(1,Math.min(pages,f.page||1));var start=(f.page-1)*10,shown=list.slice(start,start+10);el("skuResultCount").textContent="แสดง "+(list.length?start+1:0)+"–"+Math.min(start+10,list.length)+" จาก "+list.length+" SKU · "+(f.brand==="all"?"ทุกแบรนด์":f.brand==="nestle"?"Nestlé":competitorBrands.find(function(b){return b.id===f.brand}).name);el("skuCatalog").innerHTML=shown.length?shown.map(skuCard).join(""):'<div class="empty-state"><h3>ไม่พบ SKU ที่ตรงกับตัวกรอง</h3><p>ลองเลือกแบรนด์อื่นหรือกลับไปแสดงทุกแบรนด์</p><button class="btn light" data-reset="true">ล้างตัวกรอง</button></div>';el("skuPagination").innerHTML=pages>1?'<button data-catalog-page="'+(f.page-1)+'" '+(f.page===1?"disabled":"")+'>← ก่อนหน้า</button><span>หน้า '+f.page+' / '+pages+'</span><button data-catalog-page="'+(f.page+1)+'" '+(f.page===pages?"disabled":"")+'>ถัดไป →</button>':"";document.querySelectorAll("[data-brand]").forEach(function(b){b.classList.toggle("active",b.dataset.brand===f.brand);b.setAttribute("aria-pressed",String(b.dataset.brand===f.brand))})}
-function sourceStrip(){return '<div class="source-strip"><div><b>ชุดข้อมูลจำลองขนาดระบบ · '+data.length.toLocaleString("en-US")+' offers ใน 4 ช่องทาง</b><br>1 offer = 1 SKU / ร้าน / ช่องทาง · รายชื่อสินค้า ราคา และ 10 หมวดสาธิตถูกสร้างขึ้นเพื่อแสดง flow</div><div class="platform-tags">'+platforms.map(function(p){return '<span class="platform-tag">'+p+'</span>'}).join("")+'</div></div>'}
-function renderOverview(){var own=skuDefs.filter(function(s){return s.brandId==="nestle"}).length;view.innerHTML='<div class="view-intro"><div><div class="view-kicker">01 · Portfolio overview</div><h2 tabindex="-1">10 หมวดสินค้า → 100 SKU ของเรา → 3 แบรนด์คู่แข่ง</h2><p>เลือกหมวด แล้วเลือก SKU ของ Nestlé เพื่อดูคู่เทียบแต่ละแบรนด์ที่ลูกค้าเป็นผู้กำหนด และตรวจราคาข้ามช่องทาง</p></div></div><div class="overview-kpis"><div class="overview-kpi"><strong>'+categories.length+'</strong><div>หมวดสาธิต<small>หมวดละ 10 SKU ของ Nestlé</small></div></div><div class="overview-kpi"><strong>'+own+'</strong><div>SKU ของ Nestlé<small>เลือกคู่เทียบเป็นรายสินค้า</small></div></div><div class="overview-kpi"><strong>'+competitorBrands.length+'</strong><div>แบรนด์คู่แข่ง<small>'+(skuDefs.length-own)+' SKU คู่แข่งในชุดสาธิต</small></div></div><div class="overview-kpi"><strong>'+comparisonMappings.length+'</strong><div>คู่เทียบตัวอย่าง<small>1 Nestlé SKU × 3 แบรนด์</small></div></div></div><h3 class="section-title" id="categoryHeading">เลือกหมวดหมู่สินค้า</h3><p class="section-sub">แต่ละหมวดมี 10 SKU ของ Nestlé และคู่แข่งแบรนด์ละ 10 SKU · ข้อมูลจำลองทั้งหมด</p><div class="categories expanded-categories" id="categories">'+categories.map(function(c){var list=categorySkus(c),n=list.filter(function(s){return s.brandId==="nestle"}).length;return '<button class="category-card" style="'+styleCat(c)+'" data-category="'+c.id+'" aria-label="ดูหมวด '+c.name+'"><span class="category-icon">'+icon(c.symbol)+'</span><h3>'+c.name+'</h3><span class="en">'+c.en+'</span><span class="cat-count">'+n+' Nestlé SKU</span><span class="cat-mix">Brand A · Brand B · Brand C</span><span class="cat-action"><span>ดูสินค้าในหมวดนี้</span><span>→</span></span></button>'}).join("")+'</div>'+sourceStrip()+'<div class="overview-browse"><h3 class="section-title">รายการสินค้าในชุดสาธิต</h3>'+toolbar()+'</div>';renderCatalog()}
-function renderCategory(){var c=catBy(state.category),list=categorySkus(c),own=list.filter(function(s){return s.brandId==="nestle"}).length;view.innerHTML='<div class="view-intro"><div><div class="view-kicker">02 · Category view</div><div class="category-intro"><div class="category-icon" style="'+styleCat(c)+'">'+icon(c.symbol)+'</div><div><h2 tabindex="-1">'+c.name+'</h2><p>เลือก SKU ของ Nestlé แล้วเปิดคู่เทียบ 3 แบรนด์</p></div></div><div class="category-context"><span class="context-chip">'+own+' Nestlé SKU</span><span class="context-chip">'+(list.length-own)+' SKU คู่แข่ง</span><span class="context-chip">คู่เทียบกำหนดโดย Nestlé</span></div></div><button class="back-link" data-overview="true">← ทุกหมวดหมู่</button></div><div class="comparison-note">1 SKU ของ Nestlé เชื่อมกับ SKU ที่ลูกค้าเลือกของ Brand A, B และ C · สินค้าต่างขนาดแสดงราคาในหน่วยมาตรฐาน</div>'+toolbar();renderCatalog()}
+function sourceStrip(){var own=skuDefs.filter(function(s){return s.brandId==="nestle"}).length,competitors=skuDefs.length-own;return '<div class="source-strip"><div><b>ชุดข้อมูลจำลอง · '+own+' Nestlé SKU ใน 7 กลุ่มแบรนด์ · '+competitors+' competitor SKU</b><br>4 หมวดคู่แข่ง × 3 แบรนด์ตัวอย่าง · ราคา, SKU คู่แข่ง และการจัดกลุ่มเป็นข้อมูลสาธิตที่ Nestlé ต้องยืนยัน</div><div class="platform-tags">'+platforms.map(function(p){return '<span class="platform-tag">'+p+'</span>'}).join("")+'</div></div>'}
+function renderOverview(){var own=skuDefs.filter(function(s){return s.brandId==="nestle"}).length;view.innerHTML='<div class="view-intro"><div><div class="view-kicker">01 · Project B scope</div><h2 tabindex="-1">4 competitor categories · 7 Nestlé brand groups</h2><p>ขอบเขตตาม brief: Shopee, Lazada, TikTok Shop และ 7-Eleven Delivery · เก็บข้อมูลรายวัน</p></div></div><div class="overview-kpis"><div class="overview-kpi"><strong>4</strong><div>หมวดคู่แข่ง<small>ตาม brief · Infant, Coffee, Pet, Adult</small></div></div><div class="overview-kpi"><strong>7</strong><div>กลุ่มแบรนด์ Nestlé<small>ตาม business scope ใน brief</small></div></div><div class="overview-kpi"><strong>'+own+'</strong><div>SKU Nestlé ตัวอย่าง<small>10 SKU ต่อกลุ่มแบรนด์</small></div></div><div class="overview-kpi"><strong>'+competitorBrands.length+'</strong><div>แบรนด์คู่แข่งตัวอย่าง<small>ชื่อจริงและ SKU รอ Nestlé ยืนยัน</small></div></div></div><div class="brief-groups"><b>กลุ่มแบรนด์ / business scope ของ Nestlé</b><div>'+brandGroups.map(function(g){return '<span>'+esc(g.name)+'</span>'}).join("")+'</div></div><div class="sample-scope-note"><b>ข้อมูลสาธิต</b> 10 SKU ต่อกลุ่มแบรนด์ · 3 competitor brands เป็น placeholder · mapping กลุ่ม Nestlé → หมวดคู่แข่งและ SKU คู่เทียบยังเป็นตัวอย่าง รอ Nestlé ยืนยัน</div><h3 class="section-title" id="categoryHeading">หมวดคู่แข่งตาม brief</h3><p class="section-sub">เปิดแต่ละหมวดเพื่อดู Nestlé groups ที่เชื่อมกับหมวดนั้นและ SKU คู่เทียบตัวอย่าง</p><div class="categories expanded-categories" id="categories">'+categories.map(function(c){var list=categorySkus(c),ownCount=list.filter(function(s){return s.brandId==="nestle"}).length,groups=brandGroups.filter(function(g){return g.category===c.id}).map(function(g){return g.name});return '<button class="category-card" style="'+styleCat(c)+'" data-category="'+c.id+'" aria-label="ดูหมวด '+c.name+'"><span class="category-icon">'+icon(c.symbol)+'</span><h3>'+c.name+'</h3><span class="en">'+c.en+'</span><span class="cat-count">'+ownCount+' Nestlé SKU · '+(list.length-ownCount)+' competitor SKU</span><span class="cat-mix">Nestlé groups: '+esc(groups.join(" · "))+'</span><span class="cat-action"><span>ดูสินค้าในหมวดนี้</span><span>→</span></span></button>'}).join("")+'</div>'+sourceStrip()+'<div class="overview-browse"><h3 class="section-title">SKU ตัวอย่าง</h3>'+toolbar()+'</div>';renderCatalog()}
+function renderCategory(){var c=catBy(state.category),list=categorySkus(c),ownSkus=list.filter(function(s){return s.brandId==="nestle"}),groups=Array.from(new Set(ownSkus.map(function(s){return s.nestleGroupName})));view.innerHTML='<div class="view-intro"><div><div class="view-kicker">02 · Competitor category</div><div class="category-intro"><div class="category-icon" style="'+styleCat(c)+'">'+icon(c.symbol)+'</div><div><h2 tabindex="-1">'+c.name+'</h2><p>หมวดคู่แข่งตาม Project B brief · ตัวอย่าง Nestlé groups ที่จัดเข้าหมวด: '+esc(groups.join(" · "))+'</p></div></div><div class="category-context"><span class="context-chip">'+ownSkus.length+' Nestlé SKU</span><span class="context-chip">'+(list.length-ownSkus.length)+' competitor SKU</span><span class="context-chip">3 competitor brands · sample</span></div></div><button class="back-link" data-overview="true">← ทุกหมวด</button></div><div class="comparison-note">การจับคู่กลุ่ม Nestlé กับ category และ competitor SKU เป็นตัวอย่าง · Nestlé เป็นผู้ยืนยัน mapping จริง</div>'+toolbar();renderCatalog()}
 function offerCard(s,p){var r=skuOffers(s).find(function(x){return x.p===p}),x=stats(s),head='<div class="offer-card-head"><div class="offer-platform"><i></i>'+esc(p)+'</div><div class="offer-store">'+(r?esc(r.store):"ไม่มี offer ในชุดตัวอย่าง")+'</div></div>';if(!r)return '<article class="offer-card missing" style="--platform:'+platformColors[p]+'">'+head+'<div class="offer-body"><div class="offer-placeholder">ยังไม่มีข้อมูลจำลองของ SKU นี้ในช่องทางนี้<br><br>สถานะนี้ไม่ใช่ผลการตรวจสอบจากแพลตฟอร์มจริง</div></div></article>';
  var best=r.net===x.min;return '<article class="offer-card'+(best?" best":"")+'" style="--platform:'+platformColors[p]+'">'+head+'<div class="offer-body"><span class="best-label'+(best?"":" blank")+'">'+(best?"ราคาสินค้าสุทธิต่ำสุดในชุดนี้":"&nbsp;")+'</span><div class="offer-net-label">ราคาสุทธิสินค้า · ไม่รวมค่าส่ง</div><div class="offer-price">'+money(r.net)+' <small>/'+packLabel(s)+'</small></div><div class="offer-unit">'+money(unit(s,r.net),true)+' / '+unitLabel(s)+'</div><div class="price-meter" aria-hidden="true"><span style="width:'+Math.round(r.net/x.max*100)+'%"></span></div><div class="offer-summary"><span>ราคาตั้งต้น</span><b>'+money(r.list)+'</b></div><div class="offer-summary"><span>ส่วนลด + voucher</span><b>−'+money(r.sku+r.sv+r.pv)+'</b></div><div class="offer-summary"><span>ค่าส่ง</span><b>'+money(r.ship)+'</b></div><div class="offer-summary total"><span>รวมค่าส่ง</span><b>'+money(r.pay)+'</b></div></div><button class="offer-open" data-offer="'+r.id+'" aria-label="ดูส่วนลดและ voucher '+esc(p)+' '+esc(s.title)+'">ดูส่วนลดและ voucher →</button></article>'}
-function renderSku(){var s=skuBy(state.sku),c=catBy(s.category),x=stats(s);view.innerHTML='<div class="view-kicker">03 · SKU detail</div><div class="sku-hero">'+packArt(s)+'<div><span class="brand-label '+(s.brandId!=="nestle"?"competitor":"")+'">'+esc(s.brandName)+" · ตัวอย่าง"+'</span><h2 tabindex="-1">'+esc(s.title)+'</h2><p>'+esc(s.variant)+' · '+esc(c.name)+'</p><div class="sku-id">'+s.code+' · variation เดียวกันทุก offer</div><div class="platform-tags" style="margin-top:11px">'+tags(s)+'</div></div><div class="sku-range"><small>ช่วงราคาสุทธิของ SKU นี้ / '+packLabel(s)+'</small><strong>'+money(x.min)+'–'+money(x.max)+'</strong><div class="unit-range">'+money(unit(s,x.min),true)+'–'+money(unit(s,x.max),true)+' / '+unitLabel(s)+'</div><div class="spread">ต่างกัน '+money(x.max-x.min)+' · '+x.channels+' ช่องทางในชุดตัวอย่าง</div></div></div><div class="offers-heading"><div><h3>เทียบสินค้าเดียวกันข้ามช่องทาง</h3><p>แสดงราคาต่อ'+packLabel(s)+' และต่อ '+unitLabel(s)+' · คลิกเพื่อดูที่มาของราคาแต่ละชั้น</p></div><span class="sample-snapshot">ข้อมูลจำลอง · 02 พ.ย. 2026</span></div><div class="offer-grid">'+platforms.map(function(p){return offerCard(s,p)}).join("")+'</div><div class="sku-explainer"><b>อ่านราคานี้อย่างไร?</b><p>ราคาสุทธิสินค้า = ราคาตั้งต้น − ส่วนลดสินค้า − store / brand voucher − platform voucher<br>ค่าส่งแสดงแยก และนำมารวมใน “รวมค่าส่ง” · เงื่อนไข voucher ใน demo ถูกสร้างขึ้นเพื่อสาธิตเท่านั้น</p></div><div class="snapshot-meta"><b>Snapshot ข้อมูลจำลอง:</b> 02 พ.ย. 2026 · 09:00 น. (ICT)<br>ตัวอย่างนี้ยังไม่มี source capture จริง · availability, voucher eligibility และพื้นที่ส่งต้องยืนยันเมื่อเชื่อมต่อระบบจริง</div><button class="back-link" style="margin-top:19px" data-category="'+c.id+'">← กลับไปหมวด'+c.name+'</button>'}
+function renderSku(){var s=skuBy(state.sku),c=catBy(s.category),x=stats(s),group=s.nestleGroupName?"Nestlé brand group · "+s.nestleGroupName:"Competitor placeholder · "+c.en;view.innerHTML='<div class="view-kicker">03 · SKU detail</div><div class="sku-hero">'+packArt(s)+'<div><span class="brand-label '+(s.brandId!=="nestle"?"competitor":"")+'">'+esc(s.brandName)+" · ตัวอย่าง"+'</span><h2 tabindex="-1">'+esc(s.title)+'</h2><p>'+esc(group)+' · '+esc(c.name)+'</p><div class="sku-id">'+s.code+' · variation เดียวกันทุก offer</div><div class="platform-tags" style="margin-top:11px">'+tags(s)+'</div></div><div class="sku-range"><small>ช่วงราคาสุทธิของ SKU นี้ / '+packLabel(s)+'</small><strong>'+money(x.min)+'–'+money(x.max)+'</strong><div class="unit-range">'+money(unit(s,x.min),true)+'–'+money(unit(s,x.max),true)+' / '+unitLabel(s)+'</div><div class="spread">ต่างกัน '+money(x.max-x.min)+' · '+x.channels+' ช่องทางในชุดตัวอย่าง</div></div></div><div class="offers-heading"><div><h3>เทียบสินค้าเดียวกันข้ามช่องทาง</h3><p>แสดงราคาต่อ'+packLabel(s)+' และต่อ '+unitLabel(s)+' · คลิกเพื่อดูที่มาของราคาแต่ละชั้น</p></div><span class="sample-snapshot">ข้อมูลจำลอง · 02 พ.ย. 2026</span></div><div class="offer-grid">'+platforms.map(function(p){return offerCard(s,p)}).join("")+'</div><div class="sku-explainer"><b>อ่านราคานี้อย่างไร?</b><p>ราคาสุทธิสินค้า = ราคาตั้งต้น − ส่วนลด SKU − store / brand voucher − platform voucher<br>ค่าส่งแสดงแยก และนำมารวมใน “รวมค่าส่ง” · เงื่อนไข voucher ใน demo ถูกสร้างขึ้นเพื่อสาธิตเท่านั้น</p></div><div class="snapshot-meta"><b>Snapshot ข้อมูลจำลอง:</b> 02 พ.ย. 2026 · 09:00 น. (ICT)<br>ไม่มี source capture จริง · availability, voucher eligibility และพื้นที่จัดส่งต้องยืนยันเมื่อเชื่อมต่อระบบจริง</div><button class="back-link" style="margin-top:19px" data-category="'+c.id+'">← กลับไปหมวด '+c.name+'</button>'}
 function renderJourney(level){el("journey").innerHTML=["ภาพรวม","หมวดหมู่","ราย SKU","รายละเอียดราคา"].map(function(t,i){return(i?'<span class="journey-arrow" aria-hidden="true">→</span>':"")+'<span class="journey-step '+(i+1===level?"current":i+1<level?"done":"")+'" '+(i+1===level?'aria-current="step"':"")+'><i>'+(i+1)+'</i>'+t+'</span>'}).join("")}
 function renderBreadcrumbs(){if(state.level==="compare"){el("breadcrumbs").innerHTML='<button data-overview="true">ภาพรวมทั้งหมด</button><span aria-hidden="true">/</span><span aria-current="page">เทียบ Nestlé กับคู่แข่ง</span>';return}var s=state.sku?skuBy(state.sku):null,c=state.category?catBy(state.category):null;el("breadcrumbs").innerHTML=state.level==="overview"?'<span aria-current="page">ภาพรวมทั้งหมด</span>':'<button data-overview="true">ภาพรวมทั้งหมด</button><span aria-hidden="true">/</span>'+(state.level==="category"?'<span aria-current="page">'+c.name+'</span>':'<button data-category="'+c.id+'">'+c.name+'</button><span aria-hidden="true">/</span><span aria-current="page">'+esc(s.title)+'</span>')}
 function go(level,id){var hash=level==="compare"?"#demo/compare"+(id?"/"+id:""):level==="sku"?"#demo/sku/"+id:level==="category"?"#demo/category/"+id:"#demo";if(location.hash===hash){route()}else location.hash=hash}
@@ -322,10 +318,10 @@ function toast(s){el("toast").textContent=s;el("toast").classList.add("show");cl
 el("refresh").onclick=function(){var b=this;b.disabled=true;b.textContent="กำลังจำลอง…";el("runFeedback").textContent="กำลังจำลอง workflow · ไม่ดึงข้อมูลจากแพลตฟอร์ม";setTimeout(function(){var time=new Intl.DateTimeFormat("th-TH",{timeZone:"Asia/Bangkok",hour:"2-digit",minute:"2-digit"}).format(new Date());b.disabled=false;b.textContent="↻ จำลอง daily run";el("runFeedback").textContent="จำลองเสร็จ "+time+" น. · Snapshot ข้อมูลยังเป็น 02 พ.ย. 2026";toast("จำลองสำเร็จ · ไม่มีการดึงหรือเปลี่ยนข้อมูลราคา")},1000)};
 var searchMatches=[],searchOpen=false;
 function normalizeSearch(text){return String(text).normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().trim()}
-function globalProductMatches(query){var q=normalizeSearch(query);if(!q)return [];var terms=q.split(/\s+/);return skuDefs.filter(function(s){var c=catBy(s.category),hay=normalizeSearch([s.title,s.name,s.variant,s.code,s.brand,s.brandId,s.brandName,c.name,c.en].join(" "));return terms.every(function(t){return t.length===1&&/[a-z0-9]/.test(t)?new RegExp("(?:^|[^a-z0-9])"+t+"(?:$|[^a-z0-9])").test(hay):hay.indexOf(t)!==-1})})}
+function globalProductMatches(query){var q=normalizeSearch(query);if(!q)return [];var terms=q.split(/\s+/);return skuDefs.filter(function(s){var c=catBy(s.category),hay=normalizeSearch([s.title,s.name,s.variant,s.code,s.brand,s.brandId,s.brandName,s.nestleGroupName||"",c.name,c.en].join(" "));return terms.every(function(t){return t.length===1&&/[a-z0-9]/.test(t)?new RegExp("(?:^|[^a-z0-9])"+t+"(?:$|[^a-z0-9])").test(hay):hay.indexOf(t)!==-1})})}
 function closeGlobalSearch(){searchOpen=false;el("productSearchResults").hidden=true;el("productSearch").setAttribute("aria-expanded","false")}
 function renderGlobalSearch(){var input=el("productSearch"),q=input.value.trim(),box=el("productSearchResults");el("clearProductSearch").hidden=!input.value;el("productSearchScope").textContent="ทุกหมวด · "+skuDefs.length+" SKU";searchMatches=globalProductMatches(q);if(!q){closeGlobalSearch();el("productSearchStatus").textContent="";return}
-box.innerHTML='<div class="search-result-heading"><b>ผลค้นหาทุกหมวด · '+searchMatches.length+' SKU</b><span>กด Enter เพื่อเปิดผลลัพธ์แรก</span></div>'+(searchMatches.length?searchMatches.slice(0,12).map(function(s){var c=catBy(s.category);return '<button type="button" class="product-result" data-global-sku="'+s.id+'"><span class="product-result-icon" style="'+styleCat(c)+'">'+icon(c.symbol)+'</span><span class="product-result-info"><b>'+esc(s.title)+'</b><small>'+esc(s.variant)+' · '+esc(c.name)+' · '+esc(s.code)+'</small></span><span class="brand-label '+(s.brand==="Competitor"?"competitor":"")+'">'+esc(s.brandName)+'</span><span class="product-result-arrow" aria-hidden="true">→</span></button>'}).join(""):'<div class="search-empty"><b>ไม่พบสินค้าที่ตรงกับคำค้นหา</b>ลองค้นหาด้วยชื่อสินค้า หมวด ขนาด หรือรหัส SKU อื่น</div>');if(searchMatches.length>12)box.innerHTML+='<div class="search-more">แสดง 12 จาก '+searchMatches.length+' SKU · เพิ่มชื่อแบรนด์หรือรหัส SKU เพื่อค้นหาให้ตรงขึ้น</div>';box.hidden=!searchOpen;input.setAttribute("aria-expanded",String(searchOpen));el("productSearchStatus").textContent="พบ "+searchMatches.length+" SKU ในทุกหมวด"}
+box.innerHTML='<div class="search-result-heading"><b>ผลค้นหาทุกหมวด · '+searchMatches.length+' SKU</b><span>กด Enter เพื่อเปิดผลลัพธ์แรก</span></div>'+(searchMatches.length?searchMatches.slice(0,12).map(function(s){var c=catBy(s.category);return '<button type="button" class="product-result" data-global-sku="'+s.id+'"><span class="product-result-icon" style="'+styleCat(c)+'">'+icon(c.symbol)+'</span><span class="product-result-info"><b>'+esc(s.title)+'</b><small>'+esc(s.variant)+' · '+esc(s.nestleGroupName||c.en)+' · '+esc(c.name)+' · '+esc(s.code)+'</small></span><span class="brand-label '+(s.brand==="Competitor"?"competitor":"")+'">'+esc(s.brandName)+'</span><span class="product-result-arrow" aria-hidden="true">→</span></button>'}).join(""):'<div class="search-empty"><b>ไม่พบสินค้าที่ตรงกับคำค้นหา</b>ลองค้นหาด้วยชื่อสินค้า หมวด ขนาด หรือรหัส SKU อื่น</div>');if(searchMatches.length>12)box.innerHTML+='<div class="search-more">แสดง 12 จาก '+searchMatches.length+' SKU · เพิ่มชื่อแบรนด์หรือรหัส SKU เพื่อค้นหาให้ตรงขึ้น</div>';box.hidden=!searchOpen;input.setAttribute("aria-expanded",String(searchOpen));el("productSearchStatus").textContent="พบ "+searchMatches.length+" SKU ในทุกหมวด"}
 function selectGlobalSku(id){var s=skuBy(id);if(!s)return;el("productSearch").value=s.brandName+" "+s.title;renderGlobalSearch();closeGlobalSearch();go("sku",id)}
 el("productSearch").addEventListener("input",function(){searchOpen=true;renderGlobalSearch()});
 el("productSearch").addEventListener("focus",function(){if(this.value.trim()){searchOpen=true;renderGlobalSearch()}});
@@ -374,7 +370,7 @@ function comparisonBrandIndices(rows){var result={};competitorBrands.forEach(fun
 function comparisonNum(n,d){return Number(n).toLocaleString("en-US",{minimumFractionDigits:d||0,maximumFractionDigits:d||0})}
 function comparisonMoney(n){return n===null||n===undefined?"—":money(n,true)}
 function comparisonPercent(n){return n===null||n===undefined?"—":(n>0?"+":"")+comparisonNum(n,1)+"%"}
-function comparisonOwnSkus(){var q=normalizeSearch(comparisonSelection.query),category=comparisonSelection.category;return skuDefs.filter(function(s){return s.brandId==="nestle"&&(!category||category==="all"||s.category===category)&&(!q||normalizeSearch([s.title,s.name,s.variant,s.code,catBy(s.category).name,catBy(s.category).en].join(" ")).indexOf(q)!==-1)})}
+function comparisonOwnSkus(){var q=normalizeSearch(comparisonSelection.query),category=comparisonSelection.category;return skuDefs.filter(function(s){return s.brandId==="nestle"&&(!category||category==="all"||s.category===category)&&(!q||normalizeSearch([s.title,s.name,s.variant,s.code,s.nestleGroupName||"",catBy(s.category).name,catBy(s.category).en].join(" ")).indexOf(q)!==-1)})}
 function comparisonBrandCard(brand,ownId){var group=comparisonGroupData(ownId,comparisonSelection.platform),m=group.byBrand[brand.id],c=m&&skuBy(m.competitorId),quote=m&&group.competitors[brand.id],valid=!!(group.nestle&&quote),gap=valid?(group.nestle.normalized/quote.normalized-1)*100:null;
  var gapLabel=gap===null?"ยังเทียบไม่ได้":Math.abs(gap)<.05?"ราคาใกล้เคียง":gap>0?"Nestlé สูงกว่า "+comparisonPercent(gap):"Nestlé ต่ำกว่า "+comparisonPercent(gap);
  return '<button class="comparison-mapped-product" data-comparison-detail="'+ownId+'" aria-label="ดูคู่เทียบ '+esc(brand.name)+' ของ '+esc(group.nestleSku.title)+'"><span class="comparison-brand-name" style="--brand-color:'+brand.color+'"><i></i>'+esc(brand.name)+'</span><b class="comparison-peer-title">'+(c?esc(c.title):"ยังไม่ได้กำหนดคู่เทียบ")+'</b><span class="comparison-peer-pack">'+(c?esc(c.variant)+" · "+esc(c.code):"—")+'</span><span class="comparison-peer-price">'+(quote?comparisonMoney(quote.normalized)+" / "+esc(group.unit):"ราคาไม่มีข้อมูลในช่องทางร่วม")+'</span><span class="comparison-peer-gap '+(gap===null?"none":gap>0?"higher":"lower")+'">'+gapLabel+'</span></button>';
@@ -384,7 +380,7 @@ function comparisonMatrixRow(s){var group=comparisonGroupData(s.id,comparisonSel
 }
 function comparisonPortfolio(){
  var all=comparisonOwnSkus(),pageCount=Math.max(1,Math.ceil(all.length/10));comparisonSelection.page=Math.min(Math.max(comparisonSelection.page,1),pageCount);var start=(comparisonSelection.page-1)*10,rows=all.slice(start,start+10),indices=comparisonBrandIndices(all.map(function(s){return {nestleId:s.id}})),mapped=comparisonEffectiveMappings().length;
- var catOptions='<option value="all">ทุกหมวด · 10 หมวด</option>'+categories.map(function(c){return '<option value="'+c.id+'" '+(comparisonSelection.category===c.id?'selected':'')+'>'+esc(c.name)+'</option>'}).join("");
+ var catOptions='<option value="all">ทุกหมวด · 4 หมวดตาม brief</option>'+categories.map(function(c){return '<option value="'+c.id+'" '+(comparisonSelection.category===c.id?'selected':'')+'>'+esc(c.name)+'</option>'}).join("");
  var platformOptions='<option value="all" '+(comparisonSelection.platform==="all"?'selected':'')+'>ภาพรวม · ช่องทางร่วม</option>'+platforms.map(function(p){return '<option value="'+esc(p)+'" '+(comparisonSelection.platform===p?'selected':'')+'>'+esc(p)+'</option>'}).join("");
  view.innerHTML='<div class="view-intro comparison-intro"><div><div class="view-kicker">04 · Competitor comparison</div><h2 tabindex="-1">คู่เทียบ SKU ตามที่ Nestlé กำหนด</h2><p>หนึ่ง SKU ของ Nestlé เทียบกับ SKU ที่เลือกจาก Brand A, Brand B และ Brand C · เปิดแถวเพื่อดูราคาและแก้ mapping</p></div></div><div class="comparison-disclaimer"><b>ข้อมูลและ mapping จำลอง</b><span>ชื่อแบรนด์ สินค้า ราคา และคู่เทียบทั้งหมดเป็นตัวอย่าง · ลูกค้า Nestlé เป็นผู้ยืนยันคู่เทียบจริงก่อนใช้งาน</span></div><div class="comparison-toolbar"><label>หมวดสินค้า<select data-comparison-filter="category">'+catOptions+'</select></label><label>แพลตฟอร์ม<select data-comparison-filter="platform">'+platformOptions+'</select></label><label class="comparison-keyword">ค้น Nestlé SKU<input data-comparison-filter="query" type="search" value="'+esc(comparisonSelection.query)+'" placeholder="ชื่อสินค้า หรือรหัส SKU"></label></div><div class="comparison-index-heading"><b>ดัชนีราคาสุทธิต่อหน่วย · Nestlé = 100</b><span>มากกว่า 100 หมายถึงคู่เทียบมีราคาต่อหน่วยสูงกว่า Nestlé</span></div><div class="comparison-index-grid"><div class="comparison-index-card" style="--brand-color:#07559a"><span><i></i>Nestlé · ฐาน</span><strong>'+ (all.length?comparisonNum(100,1):"—") +'</strong><small>ฐานราคา · '+all.length+'/'+all.length+' Nestlé SKU ที่เลือก</small></div>'+competitorBrands.map(function(b){var r=indices[b.id];return '<div class="comparison-index-card" style="--brand-color:'+b.color+'"><span><i></i>ดัชนีราคา '+esc(b.name)+' เทียบ Nestlé</span><strong>'+(r.index===null?"—":comparisonNum(r.index,1))+'</strong><small>Nestlé = 100 · '+r.valid+'/'+all.length+' SKU ที่เทียบได้</small></div>'}).join("")+'</div><div class="comparison-grid-head"><span>SKU Nestlé · '+all.length+' รายการ</span>'+competitorBrands.map(function(b){return '<b style="--brand-color:'+b.color+'">'+esc(b.name)+'</b>'}).join("")+'</div><div class="comparison-matrix">'+(rows.length?rows.map(comparisonMatrixRow).join(""):'<div class="comparison-empty">ไม่พบ SKU ของ Nestlé ตามตัวกรองที่เลือก</div>')+'</div><div class="comparison-pagination"><span>แสดง '+(all.length?start+1:0)+'–'+Math.min(start+10,all.length)+' จาก '+all.length+' SKU · '+mapped+' mapping</span><div><button data-comparison-page="'+(comparisonSelection.page-1)+'" '+(comparisonSelection.page<=1?'disabled':'')+'>← ก่อนหน้า</button><b>หน้า '+comparisonSelection.page+' / '+pageCount+'</b><button data-comparison-page="'+(comparisonSelection.page+1)+'" '+(comparisonSelection.page>=pageCount?'disabled':'')+'>ถัดไป →</button></div></div><div class="comparison-method"><details><summary>วิธีอ่านดัชนีและการจัดการข้อมูลที่ขาด</summary><p>เทียบราคาสุทธิต่อ 100 กรัม, ต่อ 100 มล. หรือ ต่อแคปซูลตามหน่วยของหมวด ในภาพรวมจะใช้ช่องทางที่มีราคาครบทั้ง Nestlé และ SKU คู่เทียบทั้งสามแบรนด์ จึงใช้ฐานราคาของ Nestlé ชุดเดียวกันในทุกคอลัมน์ · รายช่องทางแสดงเฉพาะข้อมูลที่มี ไม่แทนค่าที่ขาดด้วยศูนย์</p><p>ดัชนีคู่แข่งคำนวณจากราคาคู่เทียบต่อหน่วย ÷ ราคา Nestlé ต่อหน่วย × 100 แล้วเฉลี่ยน้ำหนักเท่ากันตาม Nestlé SKU ที่เปรียบเทียบได้ · Nestlé มีดัชนี 100 และค่าที่สูงกว่า 100 หมายถึงคู่เทียบมีราคาต่อหน่วยสูงกว่า Nestlé</p></details></div>';
 }
@@ -451,6 +447,10 @@ Object.assign(languageText,{"ชื่อสินค้า หรือรห�
 Object.assign(languageText,{"ทุกแบรนด์":"All brands","ทุกหมวด":"All categories","หมวดสาธิต":"Sample categories","หมวดละ 10 SKU ของ Nestlé":"10 Nestlé SKUs per category","เลือกคู่เทียบเป็นรายสินค้า":"Map peers by SKU","ดูราคาได้ในมุมเดียว":"One view of market prices","ข้อมูลที่นำไปใช้ได้":"Decision-ready data","ราคา + voucher + หลักฐาน":"Price + vouchers + evidence","ตามขอบเขตที่กำหนด":"Within the agreed scope","รอบเก็บข้อมูล":"Capture frequency","ต่อวัน":"per day","หมวดคู่แข่ง":"Competitor categories","ช่องทาง":"Channels","กลุ่มแบรนด์":"Brand groups","02 พ.ย. 2026":"02 Nov 2026","02 พ.ย. 2026 · 09:00 น. (ICT)":"02 Nov 2026 · 09:00 ICT","Snapshot ตัวอย่าง: 02 พ.ย. 2026 · 09:00 น.":"Sample snapshot: 02 Nov 2026 · 09:00 ICT","ภาพรวมและราย platform":"portfolio and platform views"});
 Object.assign(languageText,{"ดัชนีราคาสุทธิต่อหน่วย · Nestlé = 100":"Net price index · Nestlé = 100","มากกว่า 100 หมายถึงคู่เทียบมีราคาต่อหน่วยสูงกว่า Nestlé":"Above 100 means the peer SKU has a higher unit price than Nestlé","Nestlé · ฐาน":"Nestlé · Baseline","ฐานราคา · ":"Baseline · "," Nestlé SKU ที่เลือก":" selected Nestlé SKUs","ดัชนีราคา ":"Price index for "," เทียบ Nestlé":" vs. Nestlé"," SKU ที่เทียบได้":" comparable SKUs","ดัชนีคู่แข่งคำนวณจากราคาคู่เทียบต่อหน่วย ÷ ราคา Nestlé ต่อหน่วย × 100 แล้วเฉลี่ยน้ำหนักเท่ากันตาม Nestlé SKU ที่เปรียบเทียบได้ · Nestlé มีดัชนี 100 และค่าที่สูงกว่า 100 หมายถึงคู่เทียบมีราคาต่อหน่วยสูงกว่า Nestlé":"Each peer index = peer unit price ÷ Nestlé unit price × 100, averaged equally across comparable Nestlé SKUs. Nestlé is 100; a value above 100 means the peer SKU is more expensive per unit.","ฐานคู่แข่ง = 100":"Nestlé baseline = 100","ดัชนีเทียบ ":"Price index vs. "});
 var languagePatterns=[
+ [/^ชุดข้อมูลจำลอง · (\d+) Nestlé SKU ใน 7 กลุ่มแบรนด์ · (\d+) competitor SKU$/,"Sample dataset · $1 Nestlé SKUs across 7 brand groups · $2 competitor SKUs"],
+ [/^(\d+) Nestlé SKU$/,"$1 Nestlé SKUs"],
+ [/^(\d+) competitor SKU$/,"$1 competitor SKUs"],
+ [/^ทุกหมวด · (\d+) SKU$/,"All categories · $1 SKUs"],
  [/^ทุกหมวด · (\d+) SKU$/,"All categories · $1 SKUs"],
  [/^แสดง (\d+)–(\d+) จาก (\d+) SKU · (.+)$/,"Showing $1–$2 of $3 SKUs · $4"],
  [/^หน้า (\d+) \/ (\d+)$/,"Page $1 / $2"],
@@ -465,6 +465,25 @@ var languagePatterns=[
  [/^ต่างกัน (.+) · (\d+) ช่องทางในชุดตัวอย่าง$/,"Range: $1 across $2 sample channels"],
  [/^(\d+) SKU คู่แข่งในชุดสาธิต$/,"$1 competitor SKUs in this sample"]
 ];
+Object.assign(languageText,{
+ "กาแฟ":"Coffee","อาหารสัตว์เลี้ยง":"Pet Food","โภชนาการเด็ก":"Infant Nutrition","โภชนาการผู้ใหญ่":"Adult Nutrition",
+ "ขอบเขตตาม brief: Shopee, Lazada, TikTok Shop และ 7-Eleven Delivery · เก็บข้อมูลรายวัน":"Brief scope: Shopee, Lazada, TikTok Shop, and 7-Eleven Delivery · daily collection",
+ "ตาม brief · Infant, Coffee, Pet, Adult":"Per brief · Infant, Coffee, Pet, Adult",
+ "ตาม business scope ใน brief":"Per business scope in the brief",
+ "SKU Nestlé ตัวอย่าง":"Sample Nestlé SKUs","10 SKU ต่อกลุ่มแบรนด์":"10 sample SKUs per group",
+ "แบรนด์คู่แข่งตัวอย่าง":"Sample competitor brands","ชื่อจริงและ SKU รอ Nestlé ยืนยัน":"Real names and SKUs pending Nestlé confirmation",
+ "กลุ่มแบรนด์ / business scope ของ Nestlé":"Nestlé brand / business groups",
+ "ข้อมูลสาธิต":"Sample data",
+ "3 competitor brands เป็น placeholder · mapping กลุ่ม Nestlé → หมวดคู่แข่งและ SKU คู่เทียบยังเป็นตัวอย่าง รอ Nestlé ยืนยัน":"The 3 competitor brands are placeholders · Nestlé-group-to-category and peer-SKU mappings are illustrative and pending confirmation",
+ "หมวดคู่แข่งตาม brief":"Competitor categories in the brief",
+ "เปิดแต่ละหมวดเพื่อดู Nestlé groups ที่เชื่อมกับหมวดนั้นและ SKU คู่เทียบตัวอย่าง":"Open a category to see the Nestlé groups provisionally assigned to it and sample peer SKUs",
+ "SKU ตัวอย่าง":"Sample SKUs",
+ "3 competitor brands · sample":"3 sample competitor brands",
+ "การจับคู่กลุ่ม Nestlé กับ category และ competitor SKU เป็นตัวอย่าง · Nestlé เป็นผู้ยืนยัน mapping จริง":"Nestlé-group-to-category and competitor-SKU mappings are illustrative · Nestlé will confirm the actual mappings",
+ "1 SKU ของ Nestlé → คู่เทียบ 3 แบรนด์":"One Nestlé SKU → peers from 3 brands",
+ "ลูกค้า Nestlé กำหนด SKU คู่เทียบของแต่ละแบรนด์ แล้วดูราคาภาพรวมและแยก platform":"Nestlé selects the peer SKU for each brand, then reviews overall and platform-level prices",
+ "4 หมวดคู่แข่ง × 3 แบรนด์ตัวอย่าง · ราคา, SKU คู่แข่ง และการจัดกลุ่มเป็นข้อมูลสาธิตที่ Nestlé ต้องยืนยัน":"4 competitor categories × 3 sample brands · prices, competitor SKUs, and group assignments are illustrative and require Nestlé confirmation"
+});
 var languageAttrOriginal=new WeakMap(),languageTextOriginal=new WeakMap();
 function translateLanguageText(value){var s=value.trim();if(!s)return value;var t=languageText[s];if(typeof t!=="string"){for(var i=0;i<languagePatterns.length;i++){if(languagePatterns[i][0].test(s)){t=s.replace(languagePatterns[i][0],languagePatterns[i][1]);break}}}if(typeof t!=="string")t=s;if(/[ก-๙]/.test(t)){Object.keys(languageText).filter(function(k){return /[ก-๙]/.test(k)&&typeof languageText[k]==="string"}).sort(function(a,b){return b.length-a.length}).forEach(function(k){if(k!==s&&t.indexOf(k)!==-1)t=t.split(k).join(languageText[k])})}return value.slice(0,value.indexOf(s))+t+value.slice(value.indexOf(s)+s.length)}
 function applyLanguageToNode(node){if(node.nodeType===3){if(!languageTextOriginal.has(node))languageTextOriginal.set(node,node.nodeValue);var original=languageTextOriginal.get(node),next=siteLanguage==="en"?translateLanguageText(original):original;if(node.nodeValue!==next)node.nodeValue=next;return}if(node.nodeType!==1)return;if(node.matches("script,style,noscript"))return;["placeholder","aria-label","title"].forEach(function(a){if(node.hasAttribute(a)){var bag=languageAttrOriginal.get(node)||{};if(!(a in bag))bag[a]=node.getAttribute(a);languageAttrOriginal.set(node,bag);var original=bag[a],next=siteLanguage==="en"?(languageText[original]||translateLanguageText(original)):original;if(node.getAttribute(a)!==next)node.setAttribute(a,next)}});node.childNodes.forEach(applyLanguageToNode)}
